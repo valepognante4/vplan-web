@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPlan | Iniciar Sesión</title>
+    <link rel="icon" type="image/png" href="img/LogoVPlan (1).png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="login-wrapper">
+        <section class="login-box">
+
+            <div class="login-left">
+                <img src="img/LogoVPlan (1).png" alt="Logo VPlan" class="login-logo-panel">
+                <h2 class="panel-title">Tu productividad,<br>simplificada.</h2>
+                <p class="panel-subtitle">Organiza, prioriza y alcanza tus metas diarias con VPlan.</p>
+                <div class="panel-metric">
+                    <span class="metric-number">500+</span>
+                    <span class="metric-label">tareas completadas por nuestra comunidad</span>
+                </div>
+            </div>
+
+            <div class="login-right">
+                <div class="logo-area">
+                    <h1>Bienvenido de nuevo 👋</h1>
+                    <p>Inicia sesión para gestionar tus tareas</p>
+                </div>
+
+                <form id="login-form" novalidate>
+                    <div class="input-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="nombre@ejemplo.com" autocomplete="email">
+                        <span class="error-msg" id="email-error"></span>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
+                        <span class="error-msg" id="password-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Acceder</button>
+                </form>
+
+                <footer class="login-footer">
+                    <a href="#" id="forgot-password-link">¿Olvidaste tu contraseña?</a>
+                </footer>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="forgot-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Correo Enviado</h3>
+            <p>Hemos enviado las instrucciones para restablecer tu contraseña a tu correo electrónico.</p>
+            <button id="btn-close-forgot-modal" class="btn-primary">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('forgot-password-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('forgot-modal').classList.add('open');
+        });
+
+        document.getElementById('btn-close-forgot-modal').addEventListener('click', function() {
+            document.getElementById('forgot-modal').classList.remove('open');
+        });
+
+        const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function showError(fieldId, message) {
+            document.getElementById(fieldId + '-error').textContent = message;
+            document.getElementById(fieldId).classList.add('input-error');
+        }
+
+        function clearError(fieldId) {
+            document.getElementById(fieldId + '-error').textContent = '';
+            document.getElementById(fieldId).classList.remove('input-error');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            clearError('email');
+            clearError('password');
+
+            if (!email) {
+                showError('email', 'El correo no puede estar vacío.');
+                valid = false;
+            } else if (!EMAIL_REGEX.test(email)) {
+                showError('email', 'Ingresá un correo válido (ej: nombre@mail.com).');
+                valid = false;
+            }
+
+            if (!password) {
+                showError('password', 'La contraseña no puede estar vacía.');
+                valid = false;
+            } else if (password.length < 8) {
+                showError('password', 'La contraseña debe tener al menos 8 caracteres.');
+                valid = false;
+            }
+
+            if (valid) {
+                localStorage.setItem('vplan_user', email);
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

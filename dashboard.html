@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="VPlan - Tu gestor de tareas personal. Organiza, prioriza y completa tus tareas con fluidez.">
+    <title>VPlan | Panel Principal</title>
+    <link rel="icon" type="image/png" href="img/LogoVPlan (1).png">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+
+        <nav class="sidebar">
+            <div class="logo-container">
+                <img src="img/LogoVPlan (1).png" alt="Logo VPlan" class="logo-img">
+            </div>
+            <ul>
+                <li class="nav-item active" id="nav-tasks">
+                    <a href="dashboard.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; width: 100%; gap: 12px;">
+                        <i data-lucide="list-checks"></i> Mis Tareas
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-stats-inline">
+                <div class="sidebar-stat-item">
+                    <span class="sidebar-stat-label">Total</span>
+                    <span class="sidebar-stat-value" id="sb-stat-total">0</span>
+                </div>
+                <div class="sidebar-stat-item">
+                    <span class="sidebar-stat-label">Pendientes</span>
+                    <span class="sidebar-stat-value sb-pending" id="sb-stat-pending">0</span>
+                </div>
+                <div class="sidebar-stat-item">
+                    <span class="sidebar-stat-label">Completadas</span>
+                    <span class="sidebar-stat-value sb-done" id="sb-stat-done">0</span>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="btn-logout">
+                    <i data-lucide="log-out"></i> Cerrar sesión
+                </a>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="content-header">
+                <div>
+                    <h1>Hola de nuevo 👋</h1>
+                    <p>Organiza tu día con claridad</p>
+                </div>
+                <button id="btn-add-task" class="btn-primary">
+                    <i data-lucide="plus"></i> Nueva Tarea
+                </button>
+            </header>
+
+            <section class="stats-row">
+                <div class="stat-card glass-card">
+                    <i data-lucide="layers"></i>
+                    <div>
+                        <span id="stat-total" class="stat-number">0</span>
+                        <p>Total</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i data-lucide="clock"></i>
+                    <div>
+                        <span id="stat-pending" class="stat-number">0</span>
+                        <p>Pendientes</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <i data-lucide="check-circle-2"></i>
+                    <div>
+                        <span id="stat-done" class="stat-number">0</span>
+                        <p>Completadas</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="filter-bar">
+                <label for="filter-status">Estado:</label>
+                <select id="filter-status" class="glass-select">
+                    <option value="all">Todas</option>
+                    <option value="pending">Pendientes</option>
+                    <option value="done">Completadas</option>
+                </select>
+
+                <label for="filter-priority">Prioridad:</label>
+                <select id="filter-priority" class="glass-select">
+                    <option value="all">Todas</option>
+                    <option value="high">Alta</option>
+                    <option value="medium">Media</option>
+                    <option value="low">Baja</option>
+                </select>
+            </section>
+
+            <section id="task-list" class="task-board"></section>
+        </main>
+    </div>
+
+    <div id="task-modal" class="modal-overlay">
+        <div class="modal-box glass-card">
+            <div class="modal-header">
+                <h2>Nueva Tarea</h2>
+                <button id="btn-close-modal" class="btn-icon"><i data-lucide="x"></i></button>
+            </div>
+            <form id="task-form">
+                <div class="input-group">
+                    <label for="task-title-input">Título *</label>
+                    <input type="text" id="task-title-input" placeholder="¿Qué necesitas hacer?" required>
+                </div>
+                <div class="input-group">
+                    <label for="task-desc-input">Descripción</label>
+                    <textarea id="task-desc-input" placeholder="Detalles opcionales..."></textarea>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="task-priority-input">Prioridad</label>
+                        <select id="task-priority-input" class="glass-select">
+                            <option value="high">Alta</option>
+                            <option value="medium" selected>Media</option>
+                            <option value="low">Baja</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="task-due-input">Fecha límite</label>
+                        <input type="date" id="task-due-input">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-full">
+                    <i data-lucide="plus-circle"></i> Agregar Tarea
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="js/modelo.js"></script>
+    <script src="js/view.js"></script>
+    <script src="js/controlador.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
