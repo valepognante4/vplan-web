@@ -56,6 +56,41 @@ function formatDate(isoDate) {
     return `${day}/${month}/${year}`;
 }
 
+/* ── Menú hamburguesa — funciones de Vista ───────────────────── */
+/**
+ * Abre o cierra el sidebar en móvil.
+ * Devuelve el nuevo estado (true = abierto).
+ */
+function toggleSidebar() {
+    const sidebar  = document.querySelector('.sidebar');
+    const overlay  = document.getElementById('sidebar-overlay');
+    const isOpen   = sidebar.classList.toggle('sidebar-open');
+
+    overlay.classList.toggle('sidebar-overlay--visible', isOpen);
+    overlay.setAttribute('aria-hidden', String(!isOpen));
+    return isOpen;
+}
+
+/** Cierra el sidebar (llamado desde overlay o resize). */
+function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    sidebar.classList.remove('sidebar-open');
+    overlay.classList.remove('sidebar-overlay--visible');
+    overlay.setAttribute('aria-hidden', 'true');
+}
+
+/** Sincroniza el estado visual y aria del botón hamburguesa. */
+function setHamburgerState(isOpen) {
+    const btn = document.getElementById('btn-hamburger');
+    if (!btn) return;
+    btn.classList.toggle('is-open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+    btn.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+}
+
+
 function showModal() {
     document.getElementById('task-modal').classList.add('open');
     document.getElementById('task-title-input').focus();

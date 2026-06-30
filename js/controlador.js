@@ -92,3 +92,26 @@ function renderSidebarStats(stats) {
 renderSidebarStats(manager.getSidebarStats());
 
 refreshUI();
+
+const btnHamburger = document.getElementById('btn-hamburger');
+if (btnHamburger) {
+    btnHamburger.addEventListener('click', () => {
+        const isOpen = toggleSidebar();   
+        setHamburgerState(isOpen);        
+    });
+}
+
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', () => {
+        closeSidebar();                   
+        setHamburgerState(false);         
+    });
+}
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) {
+        closeSidebar();
+        setHamburgerState(false);
+    }
+});

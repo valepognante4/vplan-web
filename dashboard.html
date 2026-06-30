@@ -58,8 +58,17 @@
             </div>
         </nav>
 
+        <!-- Overlay para cerrar sidebar en móvil al tocar fuera -->
+        <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
         <main class="content">
             <header class="content-header">
+                <!-- Botón hamburguesa — solo visible en móvil -->
+                <button id="btn-hamburger" class="btn-hamburger" aria-label="Abrir menú" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <div>
                     <h1>Hola de nuevo</h1>
                     <p>Organiza tu día con claridad</p>

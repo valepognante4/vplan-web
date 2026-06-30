@@ -312,7 +312,6 @@ input.input-error:focus {
     }
 }
 
-/* ── Animaciones de entrada ─────────────────────────────── */
 @keyframes loginFadeIn {
     from {
         opacity: 0;
