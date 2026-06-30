@@ -1,5 +1,5 @@
 const PRIORITY_LABELS = { high: 'Alta', medium: 'Media', low: 'Baja' };
-const PRIORITY_COLORS = { high: '#dc2626', medium: '#d97706', low: '#16a34a' };
+const PRIORITY_CLASSES = { high: 'priority-high', medium: 'priority-medium', low: 'priority-low' };
 
 function renderStats(stats) {
     document.getElementById('stat-total').textContent = stats.total;
@@ -28,7 +28,7 @@ function renderTaskList(tasks) {
 
         card.innerHTML = `
             <div class="task-card-header">
-                <span class="priority-badge" style="background:${PRIORITY_COLORS[task.priority]}20; color:${PRIORITY_COLORS[task.priority]}">
+                <span class="priority-badge ${PRIORITY_CLASSES[task.priority]}">
                     ${PRIORITY_LABELS[task.priority]}
                 </span>
                 ${task.dueDate ? `<span class="due-date"><i data-lucide="calendar" style="width:12px;height:12px"></i> ${formatDate(task.dueDate)}</span>` : ''}

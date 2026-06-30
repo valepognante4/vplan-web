@@ -7,11 +7,21 @@
     <meta name="description" content="VPlan - Tu gestor de tareas personal. Organiza, prioriza y completa tus tareas con fluidez.">
     <title>VPlan | Panel Principal</title>
     <link rel="icon" type="image/png" href="img/LogoNavegador.png">
+    <!-- Google Fonts — Inter (coherencia con el Login) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 
 <body>
+
+    <!-- ── Capa de burbujas orgánicas (coherencia visual Login) ── -->
+    <div class="bubble-layer" aria-hidden="true"></div>
+    <div class="bubble-mid"  aria-hidden="true"></div>
+    <div class="bubble-sm"   aria-hidden="true"></div>
+
     <div class="dashboard-container">
 
         <nav class="sidebar">
@@ -51,7 +61,7 @@
         <main class="content">
             <header class="content-header">
                 <div>
-                    <h1>Hola de nuevo 👋</h1>
+                    <h1>Hola de nuevo</h1>
                     <p>Organiza tu día con claridad</p>
                 </div>
                 <button id="btn-add-task" class="btn-primary">
@@ -61,21 +71,27 @@
 
             <section class="stats-row">
                 <div class="stat-card glass-card">
-                    <i data-lucide="layers"></i>
+                    <div class="stat-icon-wrap">
+                        <i data-lucide="layers"></i>
+                    </div>
                     <div>
                         <span id="stat-total" class="stat-number">0</span>
                         <p>Total</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <i data-lucide="clock"></i>
+                    <div class="stat-icon-wrap">
+                        <i data-lucide="clock"></i>
+                    </div>
                     <div>
                         <span id="stat-pending" class="stat-number">0</span>
                         <p>Pendientes</p>
                     </div>
                 </div>
                 <div class="stat-card glass-card">
-                    <i data-lucide="check-circle-2"></i>
+                    <div class="stat-icon-wrap">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
                     <div>
                         <span id="stat-done" class="stat-number">0</span>
                         <p>Completadas</p>
@@ -104,6 +120,7 @@
         </main>
     </div>
 
+    <!-- Modal nueva tarea -->
     <div id="task-modal" class="modal-overlay">
         <div class="modal-box glass-card">
             <div class="modal-header">
