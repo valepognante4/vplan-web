@@ -56,11 +56,6 @@ function formatDate(isoDate) {
     return `${day}/${month}/${year}`;
 }
 
-/* ── Menú hamburguesa — funciones de Vista ───────────────────── */
-/**
- * Abre o cierra el sidebar en móvil.
- * Devuelve el nuevo estado (true = abierto).
- */
 function toggleSidebar() {
     const sidebar  = document.querySelector('.sidebar');
     const overlay  = document.getElementById('sidebar-overlay');
@@ -71,7 +66,6 @@ function toggleSidebar() {
     return isOpen;
 }
 
-/** Cierra el sidebar (llamado desde overlay o resize). */
 function closeSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebar-overlay');
@@ -81,7 +75,6 @@ function closeSidebar() {
     overlay.setAttribute('aria-hidden', 'true');
 }
 
-/** Sincroniza el estado visual y aria del botón hamburguesa. */
 function setHamburgerState(isOpen) {
     const btn = document.getElementById('btn-hamburger');
     if (!btn) return;

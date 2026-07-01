@@ -29,14 +29,12 @@
     --transition-slow:      0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Reset ───────────────────────────────────────────────────── */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-/* ── Body & fondo orgánico ───────────────────────────────────── */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background: radial-gradient(ellipse at top right, #064e3b 0%, #0f172a 55%, #052e16 100%);
@@ -45,7 +43,6 @@ body {
     overflow: hidden;
 }
 
-/* ── Burbujas orgánicas (coherencia Login) ───────────────────── */
 .bubble-layer {
     position: fixed;
     inset: 0;
@@ -54,7 +51,6 @@ body {
     overflow: hidden;
 }
 
-/* Burbuja grande — arriba derecha: más visible (13% opacidad) */
 .bubble-layer::before {
     content: '';
     position: absolute;
@@ -223,7 +219,6 @@ body {
     flex-shrink: 0;
 }
 
-/* Stats en sidebar */
 .sidebar-stats-inline {
     padding: 16px 14px 10px;
     display: flex;
