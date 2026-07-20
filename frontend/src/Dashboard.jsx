@@ -7,7 +7,9 @@ import {
   Clock, 
   CheckCircle2, 
   X, 
-  PlusCircle 
+  PlusCircle,
+  Filter,
+  Sparkles,
 } from 'lucide-react';
 import { taskService } from './taskService';
 import './Dashboard.css';
@@ -101,9 +103,12 @@ export default function PanelPrincipal({ onNavigate }) {
 
   return (
     <div className="vplan-dashboard">
-      <div className="bubble-layer" aria-hidden="true"></div>
-      <div className="bubble-mid" aria-hidden="true"></div>
-      <div className="bubble-sm" aria-hidden="true"></div>
+      <div className="dashboard-bg" aria-hidden="true">
+        <div className="dashboard-grid" />
+        <div className="bubble-layer" />
+        <div className="bubble-mid" />
+        <div className="bubble-sm" />
+      </div>
 
       <div className="dashboard-container">
         {/* Sidebar */}
@@ -173,61 +178,78 @@ export default function PanelPrincipal({ onNavigate }) {
           </header>
 
           <section className="stats-row">
-            <div className="stat-card glass-card">
+            <div className="stat-card glass-card stat-card-total">
               <div className="stat-icon-wrap"><Layers size={22} /></div>
-              <div>
+              <div className="stat-content">
                 <span className="stat-number">{totalTasks}</span>
                 <p>Total</p>
               </div>
             </div>
-            <div className="stat-card glass-card">
+            <div className="stat-card glass-card stat-card-pending">
               <div className="stat-icon-wrap"><Clock size={22} /></div>
-              <div>
+              <div className="stat-content">
                 <span className="stat-number">{pendingTasks}</span>
                 <p>Pendientes</p>
               </div>
             </div>
-            <div className="stat-card glass-card">
+            <div className="stat-card glass-card stat-card-done">
               <div className="stat-icon-wrap"><CheckCircle2 size={22} /></div>
-              <div>
+              <div className="stat-content">
                 <span className="stat-number">{doneTasks}</span>
                 <p>Completadas</p>
               </div>
             </div>
           </section>
 
-          <section className="filter-bar">
-            <label htmlFor="filter-status">Estado:</label>
-            <select 
-              id="filter-status" 
-              className="glass-select"
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <option value="all">Todas</option>
-              <option value="pending">Pendientes</option>
-              <option value="done">Completadas</option>
-            </select>
+          <section className="filter-bar glass-card">
+            <div className="filter-bar-header">
+              <Filter size={15} strokeWidth={2.2} aria-hidden="true" />
+              <span>Filtros</span>
+            </div>
+            <div className="filter-controls">
+              <div className="filter-group">
+                <label htmlFor="filter-status">Estado</label>
+                <select 
+                  id="filter-status" 
+                  className="glass-select"
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="all">Todas</option>
+                  <option value="pending">Pendientes</option>
+                  <option value="done">Completadas</option>
+                </select>
+              </div>
 
-            <label htmlFor="filter-priority">Prioridad:</label>
-            <select 
-              id="filter-priority" 
-              className="glass-select"
-              value={filterPriority}
-              onChange={(e) => setFilterPriority(e.target.value)}
-            >
-              <option value="all">Todas</option>
-              <option value="high">Alta</option>
-              <option value="medium">Media</option>
-              <option value="low">Baja</option>
-            </select>
+              <div className="filter-group">
+                <label htmlFor="filter-priority">Prioridad</label>
+                <select 
+                  id="filter-priority" 
+                  className="glass-select"
+                  value={filterPriority}
+                  onChange={(e) => setFilterPriority(e.target.value)}
+                >
+                  <option value="all">Todas</option>
+                  <option value="high">Alta</option>
+                  <option value="medium">Media</option>
+                  <option value="low">Baja</option>
+                </select>
+              </div>
+            </div>
           </section>
 
           <section id="task-list" className="task-board">
             {filteredTasks.length === 0 ? (
               <div className="empty-state">
-                <ListChecks size={52} />
+                <div className="empty-state-icon">
+                  <ListChecks size={44} strokeWidth={1.5} />
+                </div>
+                <h3>Sin tareas por ahora</h3>
                 <p>No hay tareas que mostrar con estos filtros.</p>
+                <button className="btn-empty-cta" onClick={() => setIsModalOpen(true)}>
+                  <Sparkles size={16} strokeWidth={2.2} />
+                  Crear nueva tarea
+                </button>
               </div>
             ) : (
               filteredTasks.map(task => (

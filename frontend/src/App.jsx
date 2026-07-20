@@ -1,4 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import {
+  Sparkles,
+  ArrowRight,
+  BarChart3,
+  ListChecks,
+  CalendarDays,
+  CheckCircle2,
+  Circle,
+  TrendingUp,
+  Zap,
+  Shield,
+  Smartphone,
+  BadgeCheck,
+} from 'lucide-react';
 import './App.css';
 import PanelPrincipal  from './Dashboard';
 import Login           from './Login';
@@ -47,15 +61,15 @@ export default function App() {
   return (
     <div className="vplan-landing">
 
-      {/* ── Bubbles decorativas ── */}
-      <div className="landing-bubbles" aria-hidden="true">
-        <div className="lb lb-1" />
-        <div className="lb lb-2" />
-        <div className="lb lb-3" />
-        <div className="lb lb-4" />
+      <div className="landing-bg" aria-hidden="true">
+        <div className="landing-grid" />
+        <div className="landing-bubbles">
+          <div className="lb lb-1" />
+          <div className="lb lb-2" />
+          <div className="lb lb-3" />
+        </div>
       </div>
 
-      {/* ── Navbar ── */}
       <nav className="navbar">
         <div
           className="logo-container"
@@ -77,78 +91,141 @@ export default function App() {
         </div>
       </nav>
 
-      {/* ── Hero ── */}
       <section className="hero-section">
         <div className="hero-content">
-          <span className="badge">✦ Tu productividad, simplificada</span>
+          <span className="badge">
+            <Sparkles size={14} strokeWidth={2.2} aria-hidden="true" />
+            Tu productividad, simplificada
+          </span>
           <h1>
             Organiza, prioriza<br />
             y alcanza tus <span className="hero-highlight">metas diarias</span>
           </h1>
-          <p>
+          <p className="hero-description">
             Una plataforma diseñada para optimizar tu tiempo, gestionar tareas con prioridades
             y llevar el control de tus métricas de productividad de forma profesional.
           </p>
           <div className="hero-actions">
             <button className="btn-primary-large" onClick={() => setCurrentView('register')}>
               Empezar ahora
+              <ArrowRight size={18} strokeWidth={2.2} aria-hidden="true" />
             </button>
             <button className="btn-outline" onClick={() => setCurrentView('login')}>
               Ya tengo cuenta
             </button>
           </div>
 
-          {/* Social proof */}
           <div className="hero-social-proof">
-            <div className="proof-avatars">
-              <span>👤</span><span>👤</span><span>👤</span>
+            <div className="proof-avatars" aria-hidden="true">
+              <span className="proof-avatar">MR</span>
+              <span className="proof-avatar">AL</span>
+              <span className="proof-avatar">JS</span>
             </div>
-            <p className="proof-text"><strong>500+</strong> tareas completadas por nuestra comunidad</p>
+            <p className="proof-text">
+              <strong>500+</strong> tareas completadas por nuestra comunidad
+            </p>
           </div>
         </div>
 
-        {/* Floating visual cards */}
-        <div className="hero-visual">
-          <div className="floating-card card-1">
-            <div className="fc-icon">📊</div>
-            <div>
-              <p className="fc-title">Dashboard con métricas</p>
-              <p className="fc-sub">Seguimiento en tiempo real</p>
+        <div className="hero-visual" aria-hidden="true">
+          <div className="visual-glow" />
+
+          <div className="dashboard-mockup">
+            <div className="mockup-toolbar">
+              <span className="mockup-dot mockup-dot-red" />
+              <span className="mockup-dot mockup-dot-yellow" />
+              <span className="mockup-dot mockup-dot-green" />
+              <span className="mockup-title">VPlan · Panel</span>
+            </div>
+
+            <div className="mockup-body">
+              <div className="mockup-stats">
+                <div className="mockup-stat">
+                  <span className="mockup-stat-label">Completadas</span>
+                  <span className="mockup-stat-value">24</span>
+                  <span className="mockup-stat-trend">
+                    <TrendingUp size={12} strokeWidth={2.5} />
+                    +18%
+                  </span>
+                </div>
+                <div className="mockup-stat mockup-stat-accent">
+                  <span className="mockup-stat-label">En progreso</span>
+                  <span className="mockup-stat-value">8</span>
+                  <div className="mockup-progress">
+                    <div className="mockup-progress-fill" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mockup-section-label">Tareas de hoy</div>
+
+              <ul className="mockup-tasks">
+                <li className="mockup-task mockup-task-done">
+                  <CheckCircle2 size={16} strokeWidth={2} className="mockup-task-icon" />
+                  <span className="mockup-task-text">Revisar informe trimestral</span>
+                  <span className="mockup-priority mockup-priority-high">Alta</span>
+                </li>
+                <li className="mockup-task">
+                  <Circle size={16} strokeWidth={2} className="mockup-task-icon" />
+                  <span className="mockup-task-text">Planificar sprint semanal</span>
+                  <span className="mockup-priority mockup-priority-med">Media</span>
+                </li>
+                <li className="mockup-task">
+                  <Circle size={16} strokeWidth={2} className="mockup-task-icon" />
+                  <span className="mockup-task-text">Actualizar backlog</span>
+                  <span className="mockup-priority mockup-priority-low">Baja</span>
+                </li>
+              </ul>
             </div>
           </div>
-          <div className="floating-card card-2">
-            <div className="fc-icon">✅</div>
+
+          <div className="float-chip float-chip-1">
+            <div className="float-chip-icon">
+              <BarChart3 size={18} strokeWidth={2} />
+            </div>
             <div>
-              <p className="fc-title">Gestión de prioridades</p>
-              <p className="fc-sub">Alta · Media · Baja</p>
+              <p className="float-chip-title">Métricas en vivo</p>
+              <p className="float-chip-sub">Seguimiento en tiempo real</p>
             </div>
           </div>
-          <div className="floating-card card-3">
-            <div className="fc-icon">📅</div>
+
+          <div className="float-chip float-chip-2">
+            <div className="float-chip-icon">
+              <ListChecks size={18} strokeWidth={2} />
+            </div>
             <div>
-              <p className="fc-title">Fechas límite</p>
-              <p className="fc-sub">Recordatorios inteligentes</p>
+              <p className="float-chip-title">Prioridades</p>
+              <p className="float-chip-sub">Alta · Media · Baja</p>
+            </div>
+          </div>
+
+          <div className="float-chip float-chip-3">
+            <div className="float-chip-icon">
+              <CalendarDays size={18} strokeWidth={2} />
+            </div>
+            <div>
+              <p className="float-chip-title">Fechas límite</p>
+              <p className="float-chip-sub">Recordatorios inteligentes</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Features row ── */}
       <section className="features-section">
         <div className="feature-pill">
-          <span className="fp-icon">⚡</span>
+          <Zap size={15} strokeWidth={2} className="fp-icon" aria-hidden="true" />
           <span className="fp-text">Rápido de configurar</span>
         </div>
         <div className="feature-pill">
-          <span className="fp-icon">🔒</span>
+          <Shield size={15} strokeWidth={2} className="fp-icon" aria-hidden="true" />
           <span className="fp-text">Seguro y privado</span>
         </div>
         <div className="feature-pill">
-          <span className="fp-icon">📱</span>
+          <Smartphone size={15} strokeWidth={2} className="fp-icon" aria-hidden="true" />
           <span className="fp-text">Responsive y moderno</span>
         </div>
         <div className="feature-pill">
-          <span className="fp-icon">🆓</span>
+          <BadgeCheck size={15} strokeWidth={2} className="fp-icon" aria-hidden="true" />
           <span className="fp-text">100% gratuito</span>
         </div>
       </section>

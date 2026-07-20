@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
+import { Shield, Zap, AlertCircle, Mail } from 'lucide-react';
 import './Login.css';
 import logoVPlan from './img/LogoVPlan.png';
 
@@ -201,8 +202,8 @@ export default function Login({ onNavigate }) {
           </div>
 
           <div className="brand-trust">
-            <span className="trust-badge">✓ Seguro y privado</span>
-            <span className="trust-badge">⚡ Siempre disponible</span>
+            <span className="trust-badge"><Shield size={13} strokeWidth={2.2} /> Seguro y privado</span>
+            <span className="trust-badge"><Zap size={13} strokeWidth={2.2} /> Siempre disponible</span>
           </div>
         </div>
       </div>
@@ -212,26 +213,26 @@ export default function Login({ onNavigate }) {
         <div className="form-inner">
           <div className="form-header">
             <span className="form-eyebrow">Acceso a VPlan</span>
-            <h1>Bienvenido de nuevo 👋</h1>
+            <h1>Bienvenido de nuevo</h1>
             <p>Iniciá sesión para gestionar tus tareas y métricas de productividad.</p>
           </div>
 
-          <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+          <div className="google-login-wrap">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={() => setApiError('Google Sign-In falló o fue cancelado.')}
               useOneTap
-              theme="outline"
+              theme="filled_black"
               text="signin_with"
               shape="rectangular"
               width="100%"
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }}></div>
-            <span style={{ padding: '0 10px', color: '#64748b', fontSize: '14px' }}>o con correo</span>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }}></div>
+          <div className="auth-divider">
+            <div className="auth-divider-line" />
+            <span className="auth-divider-text">o con correo</span>
+            <div className="auth-divider-line" />
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -267,7 +268,8 @@ export default function Login({ onNavigate }) {
 
             {apiError && (
               <div className="api-error-banner" role="alert">
-                <span>⚠️</span> {apiError}
+                <AlertCircle size={16} strokeWidth={2.2} aria-hidden="true" />
+                {apiError}
               </div>
             )}
 
@@ -312,7 +314,7 @@ export default function Login({ onNavigate }) {
 
           {forgotStatus === 'success' && (
             <>
-              <div className="modal-icon modal-icon--success">✉️</div>
+              <div className="modal-icon modal-icon--success"><Mail size={28} strokeWidth={1.8} /></div>
               <h3>¡Correo enviado!</h3>
               <p>
                 Si <strong>{formData.email}</strong> está registrado, recibirás las
@@ -326,7 +328,7 @@ export default function Login({ onNavigate }) {
 
           {forgotStatus === 'error' && (
             <>
-              <div className="modal-icon modal-icon--error">⚠️</div>
+              <div className="modal-icon modal-icon--error"><AlertCircle size={28} strokeWidth={1.8} /></div>
               <h3>Algo salió mal</h3>
               <p>{forgotError}</p>
               <button onClick={closeForgotModal} className="btn-primary">

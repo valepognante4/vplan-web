@@ -1,19 +1,19 @@
 .vplan-dashboard {
-    --bg-deep:              #022c22;
+    --bg-deep:              #030806;
     --bg-mid:               #f0fdf4;
     --primary:              #16a34a;
     --primary-hover:        #15803d;
     --primary-glow:         rgba(22, 163, 74, 0.35);
     --primary-glow-strong:  rgba(22, 163, 74, 0.55);
-    --accent-light:         #86efac;          
-    --glass-bg:             rgba(255, 255, 255, 0.08);
-    --glass-bg-strong:      rgba(255, 255, 255, 0.13);
-    --glass-bg-hover:       rgba(255, 255, 255, 0.18);
-    --glass-border:         rgba(255, 255, 255, 0.18);
-    --glass-border-hover:   rgba(22, 163, 74, 0.5);
+    --accent-light:         #86efac;
+    --glass-bg:             rgba(255, 255, 255, 0.05);
+    --glass-bg-strong:      rgba(12, 24, 19, 0.72);
+    --glass-bg-hover:       rgba(255, 255, 255, 0.10);
+    --glass-border:         rgba(255, 255, 255, 0.09);
+    --glass-border-hover:   rgba(34, 197, 94, 0.32);
     --text-main:            #f0fdf4;
-    --text-sub:             rgba(240, 253, 244, 0.60);
-    --text-muted:           rgba(240, 253, 244, 0.38);
+    --text-sub:             rgba(240, 253, 244, 0.65);
+    --text-muted:           rgba(240, 253, 244, 0.40);
     --text-dark:            #064e3b;
     --danger:               #dc2626;
     --warn:                 #f59e0b;
@@ -21,20 +21,21 @@
     --radius-md:            14px;
     --radius-lg:            20px;
     --radius-xl:            28px;
-    --shadow-sm:            0 4px 16px rgba(0, 0, 0, 0.14);
-    --shadow:               0 8px 32px rgba(0, 0, 0, 0.22);
-    --shadow-hover:         0 20px 52px rgba(0, 0, 0, 0.32);
-    --shadow-green:         0 8px 32px rgba(22, 163, 74, 0.28);
+    --shadow-sm:            0 4px 16px rgba(0, 0, 0, 0.18);
+    --shadow:               0 12px 40px rgba(0, 0, 0, 0.28);
+    --shadow-hover:         0 24px 56px rgba(0, 0, 0, 0.38);
+    --shadow-green:         0 8px 32px rgba(22, 163, 74, 0.22);
     --transition:           0.22s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow:      0.4s cubic-bezier(0.4, 0, 0.2, 1);
     
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: radial-gradient(ellipse at top right, #064e3b 0%, #0f172a 55%, #052e16 100%);
+    background: var(--bg-deep);
     min-height: 100vh;
     color: var(--text-main);
     overflow: hidden;
     position: relative;
     width: 100%;
+    -webkit-font-smoothing: antialiased;
 }
 
 .vplan-dashboard *, .vplan-dashboard *::before, .vplan-dashboard *::after {
@@ -43,11 +44,32 @@
     padding: 0;
 }
 
-.vplan-dashboard .bubble-layer {
+.vplan-dashboard .dashboard-bg {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 80% 55% at 85% 10%, rgba(22, 163, 74, 0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 45% at 10% 85%, rgba(6, 78, 59, 0.14) 0%, transparent 52%),
+        var(--bg-deep);
+}
+
+.vplan-dashboard .dashboard-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, black 15%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, black 15%, transparent 72%);
+}
+
+.vplan-dashboard .bubble-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
     overflow: hidden;
 }
 
@@ -86,7 +108,7 @@
 }
 
 .vplan-dashboard .bubble-mid {
-    position: fixed;
+    position: absolute;
     top: 12%;
     left: 38%;
     width: 320px;
@@ -104,7 +126,7 @@
 }
 
 .vplan-dashboard .bubble-sm {
-    position: fixed;
+    position: absolute;
     bottom: 18%;
     right: 10%;
     width: 220px;
@@ -147,18 +169,20 @@
 }
 
 .vplan-dashboard .sidebar {
-    width: 244px;
+    width: 252px;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: rgba(10, 20, 16, 0.72);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     border-right: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
     padding: 24px 16px;
     gap: 8px;
     position: relative;
-    box-shadow: inset -1px 0 0 rgba(134, 239, 172, 0.06);
+    box-shadow:
+        inset -1px 0 0 rgba(134, 239, 172, 0.05),
+        4px 0 32px rgba(0, 0, 0, 0.12);
 }
 
 .vplan-dashboard .logo-container {
@@ -373,17 +397,19 @@
 
 .vplan-dashboard .glass-card {
     background: var(--glass-bg-strong);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
+    box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .vplan-dashboard .stats-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+    gap: 16px;
     animation: fadeSlideDown 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
 }
 
@@ -391,32 +417,79 @@
     display: flex;
     align-items: center;
     gap: 18px;
-    padding: 24px 28px;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    padding: 22px 24px;
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        border-color var(--transition);
     cursor: default;
+    position: relative;
+    overflow: hidden;
+}
+
+.vplan-dashboard .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.85;
+}
+
+.vplan-dashboard .stat-card-total::before {
+    background: linear-gradient(90deg, var(--primary), var(--accent-light));
+}
+
+.vplan-dashboard .stat-card-pending::before {
+    background: linear-gradient(90deg, #f59e0b, #fde68a);
+}
+
+.vplan-dashboard .stat-card-done::before {
+    background: linear-gradient(90deg, var(--accent-light), #bbf7d0);
 }
 
 .vplan-dashboard .stat-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-    border-color: rgba(134, 239, 172, 0.22);
+    box-shadow: var(--shadow-hover), var(--shadow-green);
+    border-color: var(--glass-border-hover);
 }
 
 .vplan-dashboard .stat-card .stat-icon-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    background: rgba(22, 163, 74, 0.14);
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(22, 163, 74, 0.12);
     flex-shrink: 0;
     border: 1px solid rgba(22, 163, 74, 0.22);
     color: var(--accent-light);
+    transition: background var(--transition), transform var(--transition);
+}
+
+.vplan-dashboard .stat-card-pending .stat-icon-wrap {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.22);
+    color: #fde68a;
+}
+
+.vplan-dashboard .stat-card-done .stat-icon-wrap {
+    background: rgba(34, 197, 94, 0.14);
+    border-color: rgba(134, 239, 172, 0.28);
+}
+
+.vplan-dashboard .stat-card:hover .stat-icon-wrap {
+    transform: scale(1.05);
+}
+
+.vplan-dashboard .stat-content {
+    min-width: 0;
 }
 
 .vplan-dashboard .stat-number {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 800;
     line-height: 1;
     color: var(--text-main);
@@ -439,40 +512,84 @@
 .vplan-dashboard .filter-bar {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 16px;
     flex-wrap: wrap;
+    padding: 16px 20px;
     animation: fadeSlideDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
 }
 
+.vplan-dashboard .filter-bar-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+}
+
+.vplan-dashboard .filter-bar-header svg {
+    color: var(--accent-light);
+}
+
+.vplan-dashboard .filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.vplan-dashboard .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .vplan-dashboard .filter-bar label {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .vplan-dashboard .glass-select {
-    padding: 9px 16px;
+    padding: 10px 16px;
+    min-width: 140px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-sm);
     color: var(--text-main);
-    font-size: 0.88rem;
+    font-size: 0.875rem;
     font-family: inherit;
     cursor: pointer;
     outline: none;
     backdrop-filter: blur(10px);
-    transition: border-color var(--transition), box-shadow var(--transition);
+    -webkit-backdrop-filter: blur(10px);
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition),
+        background var(--transition),
+        transform 0.15s ease;
 }
 
 .vplan-dashboard .glass-select:hover {
-    border-color: rgba(134, 239, 172, 0.3);
+    border-color: rgba(134, 239, 172, 0.28);
+    background: rgba(255, 255, 255, 0.07);
 }
 
 .vplan-dashboard .glass-select:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.vplan-dashboard .glass-select:active {
+    transform: scale(0.98);
 }
 
 .vplan-dashboard .glass-select option {
@@ -489,18 +606,24 @@
 }
 
 .vplan-dashboard .task-card {
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(134, 239, 172, 0.12);
+    background: rgba(12, 24, 19, 0.62);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-lg);
-    padding: 28px 30px;
+    padding: 24px 26px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18), 0 1px 0 rgba(134, 239, 172, 0.06) inset;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
-    animation: fadeInUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+    gap: 14px;
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        border-color var(--transition),
+        background var(--transition);
+    animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
     position: relative;
     overflow: hidden;
 }
@@ -690,20 +813,80 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    padding: 80px 20px;
-    color: var(--text-sub);
+    gap: 12px;
+    padding: 72px 24px;
     text-align: center;
+    background: rgba(12, 24, 19, 0.55);
+    border: 1px dashed rgba(134, 239, 172, 0.18);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.vplan-dashboard .empty-state svg {
-    opacity: 0.3;
+.vplan-dashboard .empty-state-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: rgba(22, 163, 74, 0.10);
+    border: 1px solid rgba(34, 197, 94, 0.20);
+    color: var(--accent-light);
+    margin-bottom: 4px;
+    animation: emptyPulse 3s ease-in-out infinite;
+}
+
+@keyframes emptyPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(34, 197, 94, 0); }
+    50%       { transform: scale(1.04); box-shadow: 0 0 24px rgba(34, 197, 94, 0.12); }
+}
+
+.vplan-dashboard .empty-state h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
 }
 
 .vplan-dashboard .empty-state p {
-    font-size: 0.92rem;
+    font-size: 0.875rem;
     line-height: 1.6;
-    max-width: 260px;
+    max-width: 280px;
+    color: var(--text-muted);
+}
+
+.vplan-dashboard .btn-empty-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 11px 20px;
+    background: rgba(22, 163, 74, 0.14);
+    color: var(--accent-light);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition:
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.vplan-dashboard .btn-empty-cta:hover {
+    background: rgba(22, 163, 74, 0.24);
+    border-color: rgba(134, 239, 172, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.18);
+}
+
+.vplan-dashboard .btn-empty-cta:active {
+    transform: translateY(0);
 }
 
 .vplan-dashboard .modal-overlay {
@@ -765,15 +948,26 @@
 .vplan-dashboard .input-group textarea,
 .vplan-dashboard .input-group select {
     padding: 12px 16px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     color: var(--text-main);
     font-size: 0.92rem;
     font-family: inherit;
     outline: none;
-    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition),
+        background var(--transition),
+        transform 0.15s ease;
     resize: vertical;
+}
+
+.vplan-dashboard .input-group input:hover:not(:focus),
+.vplan-dashboard .input-group textarea:hover:not(:focus),
+.vplan-dashboard .input-group select:hover:not(:focus) {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.07);
 }
 
 .vplan-dashboard .input-group input::placeholder,
@@ -878,6 +1072,27 @@
 }
 
 @media (max-width: 768px) {
+    .vplan-dashboard .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vplan-dashboard .filter-controls {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .vplan-dashboard .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .vplan-dashboard .glass-select {
+        width: 100%;
+    }
+
     .vplan-dashboard .dashboard-container {
         flex-direction: column;
         height: 100vh;

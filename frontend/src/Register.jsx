@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
+import {
+  ListChecks,
+  CalendarDays,
+  BarChart3,
+  Shield,
+  BadgeCheck,
+  Zap,
+  AlertCircle,
+  Check,
+} from 'lucide-react';
 import './Register.css';
 import logoVPlan from './img/LogoVPlan.png';
 
@@ -175,26 +185,26 @@ export default function Register({ onNavigate }) {
 
           <div className="brand-features">
             <div className="brand-feature">
-              <div className="feature-icon">✓</div>
+              <div className="feature-icon"><ListChecks size={16} strokeWidth={2.2} /></div>
               <span className="feature-text">Gestión de tareas con prioridades</span>
             </div>
             <div className="brand-feature">
-              <div className="feature-icon">📅</div>
+              <div className="feature-icon"><CalendarDays size={16} strokeWidth={2.2} /></div>
               <span className="feature-text">Fechas de vencimiento y recordatorios</span>
             </div>
             <div className="brand-feature">
-              <div className="feature-icon">📊</div>
+              <div className="feature-icon"><BarChart3 size={16} strokeWidth={2.2} /></div>
               <span className="feature-text">Dashboard con métricas de productividad</span>
             </div>
             <div className="brand-feature">
-              <div className="feature-icon">🔒</div>
+              <div className="feature-icon"><Shield size={16} strokeWidth={2.2} /></div>
               <span className="feature-text">Datos seguros y privados</span>
             </div>
           </div>
 
           <div className="brand-trust">
-            <span className="trust-badge">✓ Gratis siempre</span>
-            <span className="trust-badge">⚡ Sin tarjeta</span>
+            <span className="trust-badge"><BadgeCheck size={13} strokeWidth={2.2} /> Gratis siempre</span>
+            <span className="trust-badge"><Zap size={13} strokeWidth={2.2} /> Sin tarjeta</span>
           </div>
         </div>
       </div>
@@ -204,26 +214,26 @@ export default function Register({ onNavigate }) {
         <div className="form-inner">
           <div className="form-header">
             <span className="form-eyebrow">Crear cuenta</span>
-            <h1>Registrate en VPlan 🚀</h1>
+            <h1>Registrate en VPlan</h1>
             <p>Completá tus datos para empezar a organizar tu día de manera profesional.</p>
           </div>
 
-          <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+          <div className="google-login-wrap">
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={() => setApiError('Google Sign-In falló o fue cancelado.')}
               useOneTap={false}
-              theme="outline"
+              theme="filled_black"
               text="signup_with"
               shape="rectangular"
               width="100%"
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }}></div>
-            <span style={{ padding: '0 10px', color: '#64748b', fontSize: '14px' }}>o con correo</span>
-            <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }}></div>
+          <div className="auth-divider">
+            <div className="auth-divider-line" />
+            <span className="auth-divider-text">o con correo</span>
+            <div className="auth-divider-line" />
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -293,7 +303,8 @@ export default function Register({ onNavigate }) {
 
             {apiError && (
               <div className="api-error-banner" role="alert">
-                <span>⚠️</span> {apiError}
+                <AlertCircle size={16} strokeWidth={2.2} aria-hidden="true" />
+                {apiError}
               </div>
             )}
 
@@ -320,7 +331,7 @@ export default function Register({ onNavigate }) {
       {/* ══ Modal de cuenta creada ═══════════════════════════ */}
       <div className={`modal-overlay ${showModal ? 'open' : ''}`}>
         <div className="modal-box">
-          <div className="success-icon">✓</div>
+          <div className="success-icon"><Check size={28} strokeWidth={2.5} /></div>
           <h3>¡Cuenta creada!</h3>
           <p>Tu cuenta fue creada exitosamente. Ya podés iniciar sesión y empezar a organizar tu día.</p>
           <button onClick={() => onNavigate('login')} className="btn-primary">
