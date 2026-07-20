@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const tareasController = require('../controllers/tareaController');
 
-// Definimos los endpoints
-// La ruta base ya es '/api/tareas', así que '/' aquí significa '/api/tareas/'
-router.get('/', tareasController.obtenerTareas);
-router.post('/', tareasController.crearTarea);
+// La ruta base ya es '/api/tareas'
+router.get('/',               tareasController.obtenerTareas);
+router.post('/',              tareasController.crearTarea);
+router.patch('/:id/toggle',   tareasController.toggleTarea);
+router.delete('/:id',         tareasController.eliminarTarea);
 
 module.exports = router;

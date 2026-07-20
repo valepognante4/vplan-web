@@ -5,12 +5,14 @@ const tareaService = {
         return await tareaRepository.findAll();
     },
     crearNuevaTarea: async (datosTarea) => {
-        // Aquí podrías validar reglas de negocio antes de guardar
-        if (datosTarea.prioridad === 'ALTA' && !datosTarea.descripcion) {
-            throw new Error('Las tareas de alta prioridad deben tener descripción');
-        }
         return await tareaRepository.create(datosTarea);
-    }
+    },
+    toggleTarea: async (id) => {
+        return await tareaRepository.toggle(id);
+    },
+    eliminarTarea: async (id) => {
+        return await tareaRepository.remove(id);
+    },
 };
 
-module.exports = tareaService;
+module.exports = tareaService;

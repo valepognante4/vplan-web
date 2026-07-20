@@ -1,0 +1,47 @@
+const API_URL = 'http://localhost:3000/api/tareas';
+
+// Mapea una fila del DB (snake_case español) al shape que usa el Dashboard
+const mapTarea = (t) => ({
+    id:          t.id,
+    title:       t.titulo,
+    description: t.descripcion,
+    priority:    t.prioridad,
+    dueDate:     t.fecha_vencimiento,
+    completed:   t.completada,
+    createdAt:   t.created_at,
+});
+
+export const taskService = {
+    async getTasks() {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error('Error al obtener las tareas');
+        const data = await response.json();
+        return data.map(mapTarea);
+    },
+
+    async createTask(taskData) {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(taskData),
+        });
+        if (!response.ok) throw new Error('Error al crear la tarea');
+        return mapTarea(await response.json());
+    },
+
+    async toggleTask(id) {
+        const response = await fetch(`${API_URL}/${id}/toggle`, {
+            method: 'PATCH',
+        });
+        if (!response.ok) throw new Error('Error al actualizar la tarea');
+        return mapTarea(await response.json());
+    },
+
+    async deleteTask(id) {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'DELETE',
+        });
+        if (!response.ok) throw new Error('Error al eliminar la tarea');
+        return await response.json();
+    },
+};
