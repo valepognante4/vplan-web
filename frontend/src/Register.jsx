@@ -249,7 +249,7 @@ export default function Register({ onNavigate }) {
             )}
 
             <button type="submit" className="btn-primary" disabled={isLoading}>
-              {isLoading ? 'Creando cuenta...' : 'Crear cuenta gratuita'}
+              {isLoading ? 'Creando cuenta...' : 'Crear cuenta'}
             </button>
           </form>
 

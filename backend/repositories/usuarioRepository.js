@@ -26,6 +26,23 @@ const usuarioRepository = {
         const result = await pool.query(query, [nombre, email, password_hash]);
         return result.rows[0];
     },
+
+    /**
+     * Actualiza el hash de contraseña de un usuario por su ID.
+     * @param {number} id
+     * @param {string} password_hash  Nuevo hash generado con bcrypt
+     * @returns {Promise<Object>} Fila actualizada (id, nombre, email, created_at)
+     */
+    updatePassword: async (id, password_hash) => {
+        const query = `
+            UPDATE usuarios
+            SET password_hash = $1
+            WHERE id = $2
+            RETURNING id, nombre, email, created_at
+        `;
+        const result = await pool.query(query, [password_hash, id]);
+        return result.rows[0] || null;
+    },
 };
 
 module.exports = usuarioRepository;

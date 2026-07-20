@@ -60,7 +60,7 @@ export default function App() {
           </p>
           <div className="hero-actions">
             <button className="btn-primary-large" onClick={() => setCurrentView('register')}>
-              Empezar ahora — es gratis
+              Empezar ahora
             </button>
             <button className="btn-outline" onClick={() => setCurrentView('login')}>
               Ya tengo cuenta

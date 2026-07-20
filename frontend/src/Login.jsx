@@ -189,7 +189,7 @@ export default function Login({ onNavigate }) {
                 className="btn-link-green"
                 onClick={() => onNavigate('register')}
               >
-                Registrate gratis
+                Registrate
               </button>
             </p>
           </footer>

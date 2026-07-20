@@ -1,6 +1,7 @@
-const bcrypt         = require('bcryptjs');
-const jwt            = require('jsonwebtoken');
-const usuarioRepository = require('../repositories/usuarioRepository');
+const bcrypt              = require('bcryptjs');
+const jwt                 = require('jsonwebtoken');
+const usuarioRepository   = require('../repositories/usuarioRepository');
+const transporter         = require('../config/mailer');
 
 // ── Helpers de validación ────────────────────────────────────────────────────
 
@@ -129,6 +130,109 @@ const authService = {
         const { password_hash, ...usuarioSinHash } = usuario;
 
         return { token, usuario: usuarioSinHash };
+    },
+
+    /**
+     * Solicita el reseteo de contraseña.
+     * 1. Verifica que el usuario exista (sin revelar si no existe — respuesta genérica).
+     * 2. Genera un JWT de corta duración firmado con JWT_RESET_SECRET.
+     * 3. Envía un correo con el enlace de reseteo usando Nodemailer.
+     *
+     * @param {string} email  Email del usuario que solicita el reset
+     * @returns {Promise<void>}
+     */
+    solicitarReset: async (email) => {
+        // 1. Buscar usuario (sin revelar existencia en la respuesta pública)
+        const usuario = await usuarioRepository.findByEmail(email);
+        if (!usuario) {
+            // Respuesta genérica para evitar enumeración de emails
+            return;
+        }
+
+        // 2. Generar token de reseteo con clave y expiración propias
+        const resetToken = jwt.sign(
+            { id: usuario.id, email: usuario.email },
+            process.env.JWT_RESET_SECRET,
+            { expiresIn: process.env.JWT_RESET_EXPIRES_IN || '15m' }
+        );
+
+        // 3. Construir el enlace de reseteo
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        const resetUrl    = `${frontendUrl}/reset-password?token=${resetToken}`;
+
+        // 4. Enviar correo con Nodemailer
+        await transporter.sendMail({
+            from:    `"VPlan" <${process.env.SMTP_USER}>`,
+            to:      usuario.email,
+            subject: 'Restablecer tu contraseña — VPlan',
+            text: `Hola ${usuario.nombre},\n\nRecibimos una solicitud para restablecer tu contraseña.\nUsa el siguiente enlace (válido por 15 minutos):\n\n${resetUrl}\n\nSi no solicitaste este cambio, ignora este mensaje.\n\n— El equipo de VPlan`,
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; color: #1a1a2e;">
+                    <h2 style="color: #6c63ff;">Restablecer contraseña</h2>
+                    <p>Hola <strong>${usuario.nombre}</strong>,</p>
+                    <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>VPlan</strong>.</p>
+                    <p>Este enlace es válido durante <strong>15 minutos</strong>:</p>
+                    <p style="text-align: center; margin: 28px 0;">
+                        <a href="${resetUrl}"
+                           style="background: #6c63ff; color: #fff; text-decoration: none;
+                                  padding: 12px 28px; border-radius: 8px; font-size: 16px;">
+                            Restablecer contraseña
+                        </a>
+                    </p>
+                    <p style="font-size: 13px; color: #666;">
+                        Si no solicitaste este cambio, puedes ignorar este correo con total seguridad.
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin-top: 32px;">
+                    <p style="font-size: 12px; color: #aaa; text-align: center;">© ${new Date().getFullYear()} VPlan</p>
+                </div>
+            `,
+        });
+    },
+
+    /**
+     * Restablece la contraseña de un usuario.
+     * 1. Verifica y decodifica el token con JWT_RESET_SECRET.
+     * 2. Valida la fortaleza de la nueva contraseña.
+     * 3. Hashea la nueva contraseña con bcrypt.
+     * 4. Actualiza el hash en la base de datos.
+     *
+     * @param {string} token         JWT de reseteo recibido del frontend
+     * @param {string} nuevaPassword Nueva contraseña en texto plano
+     * @returns {Promise<void>}
+     */
+    restablecerPassword: async (token, nuevaPassword) => {
+        // 1. Verificar y decodificar el token de reseteo
+        let payload;
+        try {
+            payload = jwt.verify(token, process.env.JWT_RESET_SECRET);
+        } catch (err) {
+            const error = new Error(
+                err.name === 'TokenExpiredError'
+                    ? 'El enlace de recuperación ha expirado. Solicita uno nuevo.'
+                    : 'El enlace de recuperación no es válido.'
+            );
+            error.statusCode = 400;
+            throw error;
+        }
+
+        // 2. Validar la fortaleza de la nueva contraseña
+        const { valida, mensaje } = validarPassword(nuevaPassword);
+        if (!valida) {
+            const err = new Error(mensaje);
+            err.statusCode = 400;
+            throw err;
+        }
+
+        // 3. Hashear la nueva contraseña
+        const password_hash = await bcrypt.hash(nuevaPassword, 12);
+
+        // 4. Persistir el cambio en la base de datos
+        const usuarioActualizado = await usuarioRepository.updatePassword(payload.id, password_hash);
+        if (!usuarioActualizado) {
+            const err = new Error('No se encontró el usuario asociado a este enlace.');
+            err.statusCode = 404;
+            throw err;
+        }
     },
 };
 
