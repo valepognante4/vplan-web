@@ -1,16 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
-import PanelPrincipal from './Dashboard';
-import Login from './Login';
-import Register from './Register';
-import logoVPlan from './img/LogoVPlan.png';
+import PanelPrincipal  from './Dashboard';
+import Login           from './Login';
+import Register        from './Register';
+import ResetPassword   from './ResetPassword';
+import logoVPlan       from './img/LogoVPlan.png';
+
+/**
+ * Detecta si la URL actual contiene un token de reset (/reset-password?token=...).
+ * Si hay token, devuelve { view: 'reset-password', token }.
+ * Si no, devuelve { view: 'landing', token: null }.
+ */
+function getInitialState() {
+  const params = new URLSearchParams(window.location.search);
+  const path   = window.location.pathname;
+  const token  = params.get('token');
+
+  if (path === '/reset-password' && token) {
+    return { view: 'reset-password', token };
+  }
+  return { view: 'landing', token: null };
+}
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing');
+  const initial = getInitialState();
+  const [currentView, setCurrentView] = useState(initial.view);
+  const [resetToken,  setResetToken]  = useState(initial.token);
 
-  if (currentView === 'dashboard') return <PanelPrincipal onNavigate={setCurrentView} />;
-  if (currentView === 'login')     return <Login     onNavigate={setCurrentView} />;
-  if (currentView === 'register')  return <Register  onNavigate={setCurrentView} />;
+  /* Navegar entre vistas — limpiamos la URL si salimos del reset */
+  const handleNavigate = (view) => {
+    if (view !== 'reset-password') {
+      // Limpiar query-params del reset para no dejar el token en la barra
+      const cleanUrl = window.location.pathname.replace('/reset-password', '/') || '/';
+      window.history.replaceState({}, '', cleanUrl === '/reset-password' ? '/' : cleanUrl);
+      setResetToken(null);
+    }
+    setCurrentView(view);
+  };
+
+  if (currentView === 'dashboard')      return <PanelPrincipal onNavigate={handleNavigate} />;
+  if (currentView === 'login')          return <Login          onNavigate={handleNavigate} />;
+  if (currentView === 'register')       return <Register       onNavigate={handleNavigate} />;
+  if (currentView === 'reset-password') return <ResetPassword  onNavigate={handleNavigate} token={resetToken} />;
 
   /* ── Landing Page ──────────────────────────────────────────── */
   return (

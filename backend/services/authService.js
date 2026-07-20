@@ -153,7 +153,7 @@ const authService = {
         const resetToken = jwt.sign(
             { id: usuario.id, email: usuario.email },
             process.env.JWT_RESET_SECRET,
-            { expiresIn: process.env.JWT_RESET_EXPIRES_IN || '15m' }
+            { expiresIn: process.env.JWT_RESET_EXPIRES_IN || '1h' }
         );
 
         // 3. Construir el enlace de reseteo
@@ -165,13 +165,13 @@ const authService = {
             from:    `"VPlan" <${process.env.SMTP_USER}>`,
             to:      usuario.email,
             subject: 'Restablecer tu contraseña — VPlan',
-            text: `Hola ${usuario.nombre},\n\nRecibimos una solicitud para restablecer tu contraseña.\nUsa el siguiente enlace (válido por 15 minutos):\n\n${resetUrl}\n\nSi no solicitaste este cambio, ignora este mensaje.\n\n— El equipo de VPlan`,
+            text: `Hola ${usuario.nombre},\n\nRecibimos una solicitud para restablecer tu contraseña.\nUsa el siguiente enlace (válido por 1 hora):\n\n${resetUrl}\n\nSi no solicitaste este cambio, ignora este mensaje.\n\n— El equipo de VPlan`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; color: #1a1a2e;">
                     <h2 style="color: #6c63ff;">Restablecer contraseña</h2>
                     <p>Hola <strong>${usuario.nombre}</strong>,</p>
                     <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>VPlan</strong>.</p>
-                    <p>Este enlace es válido durante <strong>15 minutos</strong>:</p>
+                    <p>Este enlace es válido durante <strong>1 hora</strong>:</p>
                     <p style="text-align: center; margin: 28px 0;">
                         <a href="${resetUrl}"
                            style="background: #6c63ff; color: #fff; text-decoration: none;

@@ -476,6 +476,35 @@
     line-height: 1.6;
 }
 
+/* ── Modal: spinner ─────────────────────────────────────────── */
+.modal-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(22,163,74,0.18);
+    border-top-color: var(--green-500);
+    border-radius: 50%;
+    animation: spinModal 0.75s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spinModal {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Modal: icon ─────────────────────────────────────────────── */
+.modal-icon {
+    font-size: 2.4rem;
+    margin-bottom: 14px;
+    display: block;
+    text-align: center;
+    animation: iconPop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes iconPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
 /* ════════════════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════════════════ */
