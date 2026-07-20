@@ -1,7 +1,8 @@
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
-const express = require('express');
-const cors    = require('cors');
-const app     = express();
+const express      = require('express');
+const cors         = require('cors');
+const cookieParser = require('cookie-parser');
+const app          = express();
 
 // ── CORS: permite peticiones desde cualquier puerto de localhost ──────────────
 const LOCALHOST_REGEX = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
@@ -27,6 +28,7 @@ app.use(cors(corsOptions));
 
 // ── Middlewares globales ──────────────────────────────────────────────────────
 app.use(express.json());
+app.use(cookieParser()); // Necesario para leer req.cookies (cookies HTTP-only)
 
 // ── Importar rutas ────────────────────────────────────────────────────────────
 const tareasRoutes = require('./routes/tareasRoutes');

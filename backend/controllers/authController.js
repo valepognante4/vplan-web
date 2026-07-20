@@ -1,4 +1,6 @@
-const authService = require('../services/authService');
+const authService       = require('../services/authService');
+const googleAuthService = require('../services/googleAuthService');
+const jwt               = require('jsonwebtoken');
 
 /**
  * POST /api/auth/registro
@@ -98,6 +100,47 @@ exports.resetPassword = async (req, res) => {
         return res.status(200).json({ mensaje: '¡Contraseña restablecida con éxito! Ya puedes iniciar sesión.' });
     } catch (error) {
         const statusCode = error.statusCode || 500;
+        return res.status(statusCode).json({ error: error.message });
+    }
+};
+/**
+ * POST /api/auth/google
+ * Body: { credential }  ← ID Token devuelto por @react-oauth/google
+ *
+ * 1. Verifica el ID Token con Google.
+ * 2. Hace upsert del usuario en la BD.
+ * 3. Emite un JWT propio y lo devuelve en cookie HTTP-only Y en el body.
+ */
+exports.googleLogin = async (req, res) => {
+    try {
+        const { credential } = req.body;
+
+        const usuario = await googleAuthService.loginConGoogle(credential);
+
+        // Generar JWT propio (mismo formato que el login tradicional)
+        const token = jwt.sign(
+            { id: usuario.id, email: usuario.email },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
+        );
+
+        // ── Cookie HTTP-only segura ──────────────────────────────────────
+        const isProduction = process.env.NODE_ENV === 'production';
+        res.cookie('vplan_token', token, {
+            httpOnly: true,              // JavaScript NO puede leer esta cookie
+            secure:   isProduction,      // Solo HTTPS en producción; HTTP en dev
+            sameSite: 'lax',             // Protección CSRF; funciona en mismo host (localhost)
+            maxAge:   24 * 60 * 60 * 1000, // 24 horas en ms
+        });
+
+        return res.status(200).json({
+            mensaje: '¡Sesión iniciada con Google!',
+            token,       // También en body para compatibilidad con localStorage actual
+            usuario,
+        });
+    } catch (error) {
+        const statusCode = error.statusCode || 500;
+        console.error('[googleLogin] Error:', error.message);
         return res.status(statusCode).json({ error: error.message });
     }
 };

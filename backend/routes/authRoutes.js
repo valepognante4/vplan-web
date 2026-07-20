@@ -14,4 +14,7 @@ router.post('/forgot-password', authController.forgotPassword);
 // POST /api/auth/reset-password — confirmar nueva contraseña con el token recibido
 router.post('/reset-password', authController.resetPassword);
 
+// POST /api/auth/google — iniciar sesión / registrarse con Google OAuth
+router.post('/google', authController.googleLogin);
+
 module.exports = router;
