@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: vplan-backend
+    env: docker
+    region: ohio
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: PORT
+        value: 3001
+
+  - type: web
+    name: vplan-frontend
+    env: docker
+    region: ohio
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile

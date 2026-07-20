@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ides}
+      POSTGRES_DB: ${DB_NAME:-vplan_bd}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database.sql:/docker-entrypoint-initdb.d/01-database.sql
+      - ./migration_google_oauth.sql:/docker-entrypoint-initdb.d/02-migration.sql
+    networks:
+      - vplan-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+    networks:
+      - vplan-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        # Se asume que el VITE_GOOGLE_CLIENT_ID está en frontend/.env, pero también
+        # se puede pasar por el compose si estuviese exportado.
+        # Por suerte, al hacer COPY frontend/ ./ el frontend/.env ya se copia y vite lo toma.
+        - VITE_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - vplan-network
+
+networks:
+  vplan-network:
+    driver: bridge
+
+volumes:
+  pgdata:
