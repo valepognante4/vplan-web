@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Register.css'; // O puedes fusionarlo con tu App.css actual
+import './Register.css';
+import logoVPlan from './img/LogoVPlan.png';
 
 const API_URL = 'http://localhost:3000/api/auth/registro';
 
@@ -23,21 +24,15 @@ export default function Register({ onNavigate }) {
     if (pwd.length >= 8) score++;
     if (/[A-Z]/.test(pwd) || /[0-9]/.test(pwd)) score++;
     if (/[^A-Za-z0-9]/.test(pwd) && pwd.length >= 10) score++;
-    
     const labels = ['', 'Débil', 'Media', 'Fuerte'];
     const labelColors = ['', '#ef4444', '#f59e0b', '#16a34a'];
-    
     return { score, label: pwd ? labels[score] : '', color: labelColors[score] };
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-
-    if (name === 'password') {
-      setPasswordStrength(getPasswordStrength(value));
-    }
-    // Limpiar error de API al escribir
+    if (name === 'password') setPasswordStrength(getPasswordStrength(value));
     if (apiError) setApiError('');
   };
 
@@ -74,11 +69,8 @@ export default function Register({ onNavigate }) {
     }
 
     setErrors(newErrors);
-
-    // Si hay errores de validación local, no continuar
     if (Object.keys(newErrors).length > 0) return;
 
-    // ── Llamada a la API real ─────────────────────────────────────────────────
     try {
       setIsLoading(true);
       setApiError('');
@@ -101,10 +93,8 @@ export default function Register({ onNavigate }) {
         return;
       }
 
-      // ── Éxito: guardar token y datos del usuario ──────────────────────────
       localStorage.setItem('vplan_token', data.token);
       localStorage.setItem('vplan_user', JSON.stringify(data.usuario));
-
       setShowModal(true);
     } catch (err) {
       setApiError('No se pudo conectar al servidor. Verificá que el backend esté corriendo.');
@@ -114,34 +104,67 @@ export default function Register({ onNavigate }) {
   };
 
   return (
-    <main className="login-wrapper">
-      <section className="register-box">
-        {/* ── Panel Izquierdo ── */}
-        <div className="register-left">
-          <h2 className="panel-title">Tu productividad,<br />simplificada.</h2>
-          <p className="panel-subtitle">Organizá, priorizá y alcanzá tus metas diarias con VPlan.</p>
+    <div className="auth-page">
 
-          <div className="register-benefits">
-            <div className="benefit-item">
-              <div className="benefit-icon">✓</div>
-              <span className="benefit-text">Gestión de tareas con prioridades</span>
-            </div>
-            <div className="benefit-item">
-              <div className="benefit-icon">📅</div>
-              <span className="benefit-text">Fechas de vencimiento y recordatorios</span>
-            </div>
-            <div className="benefit-item">
-              <div className="benefit-icon">📊</div>
-              <span className="benefit-text">Dashboard con métricas de productividad</span>
-            </div>
-          </div>
+      {/* ══ LEFT PANEL — Brand ══════════════════════════════════ */}
+      <div className="auth-panel-brand">
+        {/* Animated bubbles */}
+        <div className="auth-bubbles" aria-hidden="true">
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
         </div>
 
-        {/* ── Panel Derecho: Formulario ── */}
-        <div className="register-right">
-          <div className="logo-area">
-            <h1>Crear cuenta 🚀</h1>
-            <p>Completá tus datos para empezar a usar VPlan</p>
+        <div className="brand-content">
+          <img src={logoVPlan} alt="VPlan" className="brand-logo" />
+
+          <div>
+            <h2 className="brand-headline">
+              Empieza a organizarte<br />
+              <em>de verdad.</em>
+            </h2>
+            <p className="brand-sub" style={{ marginTop: '14px' }}>
+              Crea tu cuenta gratuita y accedé al sistema de gestión de tareas más limpio y efectivo.
+            </p>
+          </div>
+
+          <div className="brand-divider" />
+
+          <div className="brand-features">
+            <div className="brand-feature">
+              <div className="feature-icon">✓</div>
+              <span className="feature-text">Gestión de tareas con prioridades</span>
+            </div>
+            <div className="brand-feature">
+              <div className="feature-icon">📅</div>
+              <span className="feature-text">Fechas de vencimiento y recordatorios</span>
+            </div>
+            <div className="brand-feature">
+              <div className="feature-icon">📊</div>
+              <span className="feature-text">Dashboard con métricas de productividad</span>
+            </div>
+            <div className="brand-feature">
+              <div className="feature-icon">🔒</div>
+              <span className="feature-text">Datos seguros y privados</span>
+            </div>
+          </div>
+
+          <div className="brand-trust">
+            <span className="trust-badge">✓ Gratis siempre</span>
+            <span className="trust-badge">⚡ Sin tarjeta</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ RIGHT PANEL — Form ══════════════════════════════════ */}
+      <div className="auth-panel-form">
+        <div className="form-inner">
+          <div className="form-header">
+            <span className="form-eyebrow">Crear cuenta</span>
+            <h1>Registrate en VPlan 🚀</h1>
+            <p>Completá tus datos para empezar a organizar tu día de manera profesional.</p>
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -185,9 +208,9 @@ export default function Register({ onNavigate }) {
                 className={errors.password ? 'input-error' : ''}
               />
               <div className="password-strength">
-                <div className={`strength-bar ${passwordStrength.score >= 1 ? (passwordStrength.score === 1 ? 'weak' : passwordStrength.score === 2 ? 'medium' : 'strong') : ''}`}></div>
-                <div className={`strength-bar ${passwordStrength.score >= 2 ? (passwordStrength.score === 2 ? 'medium' : 'strong') : ''}`}></div>
-                <div className={`strength-bar ${passwordStrength.score === 3 ? 'strong' : ''}`}></div>
+                <div className={`strength-bar ${passwordStrength.score >= 1 ? (passwordStrength.score === 1 ? 'weak' : passwordStrength.score === 2 ? 'medium' : 'strong') : ''}`} />
+                <div className={`strength-bar ${passwordStrength.score >= 2 ? (passwordStrength.score === 2 ? 'medium' : 'strong') : ''}`} />
+                <div className={`strength-bar ${passwordStrength.score === 3 ? 'strong' : ''}`} />
               </div>
               <span className="strength-label" style={{ color: passwordStrength.color }}>
                 {passwordStrength.label}
@@ -209,7 +232,6 @@ export default function Register({ onNavigate }) {
               <span className="error-msg">{errors.confirmPassword}</span>
             </div>
 
-            {/* ── Error del servidor ── */}
             {apiError && (
               <div className="api-error-banner" role="alert">
                 <span>⚠️</span> {apiError}
@@ -217,34 +239,36 @@ export default function Register({ onNavigate }) {
             )}
 
             <button type="submit" className="btn-primary" disabled={isLoading}>
-              {isLoading ? 'Creando cuenta...' : 'Registrarse'}
+              {isLoading ? 'Creando cuenta...' : 'Crear cuenta gratuita'}
             </button>
           </form>
 
-          <footer className="register-footer">
+          <footer className="form-footer">
             <p>
               ¿Ya tenés cuenta?{' '}
-              <button 
-                type="button" 
-                onClick={() => onNavigate('login')} 
-                style={{ background: 'none', border: 'none', color: '#16a34a', cursor: 'pointer', fontWeight: 600, padding: 0 }}
+              <button
+                type="button"
+                className="btn-link-green"
+                onClick={() => onNavigate('login')}
               >
                 Iniciá sesión
               </button>
             </p>
           </footer>
         </div>
-      </section>
+      </div>
 
-      {/* ── Modal de cuenta creada ── */}
+      {/* ══ Modal de cuenta creada ═══════════════════════════ */}
       <div className={`modal-overlay ${showModal ? 'open' : ''}`}>
         <div className="modal-box">
           <div className="success-icon">✓</div>
           <h3>¡Cuenta creada!</h3>
           <p>Tu cuenta fue creada exitosamente. Ya podés iniciar sesión y empezar a organizar tu día.</p>
-          <button onClick={() => onNavigate('login')} className="btn-primary">Ir al inicio de sesión</button>
+          <button onClick={() => onNavigate('login')} className="btn-primary">
+            Ir al inicio de sesión
+          </button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

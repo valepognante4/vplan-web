@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const tareasController = require('../controllers/tareaController');
+const { verificarToken } = require('../middlewares/authMiddleware');
+
+// Proteger todas las rutas de tareas
+router.use(verificarToken);
 
 // La ruta base ya es '/api/tareas'
 router.get('/',               tareasController.obtenerTareas);

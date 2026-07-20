@@ -1,4 +1,6 @@
-require('dotenv').config();
+const path = require('path');
+// Cargar el .env desde la raíz del proyecto sin importar el CWD desde donde se lanza Node
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 const { Pool } = require('pg');
 
 const pool = new Pool({

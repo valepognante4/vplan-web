@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { taskService } from './taskService';
 import './Dashboard.css';
+import logoVPlan from './img/LogoVPlan.png';
 
 export default function PanelPrincipal({ onNavigate }) {
   const [tasks, setTasks] = useState([]);
@@ -108,7 +109,7 @@ export default function PanelPrincipal({ onNavigate }) {
         {/* Sidebar */}
         <nav className={`sidebar ${isSidebarOpen ? 'sidebar-open' : ''}`}>
           <div className="logo-container">
-            <img src="img/LogoVPlan (1).png" alt="Logo VPlan" className="logo-img" />
+            <img src={logoVPlan} alt="Logo VPlan" className="logo-img" />
           </div>
           <ul>
             <li className="nav-item active">

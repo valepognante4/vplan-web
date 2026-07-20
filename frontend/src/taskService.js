@@ -11,9 +11,18 @@ const mapTarea = (t) => ({
     createdAt:   t.created_at,
 });
 
+// Helper para incluir el token JWT en las cabeceras
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('vplan_token');
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : '',
+    };
+};
+
 export const taskService = {
     async getTasks() {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, { headers: getAuthHeaders() });
         if (!response.ok) throw new Error('Error al obtener las tareas');
         const data = await response.json();
         return data.map(mapTarea);
@@ -22,7 +31,7 @@ export const taskService = {
     async createTask(taskData) {
         const response = await fetch(API_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify(taskData),
         });
         if (!response.ok) throw new Error('Error al crear la tarea');
@@ -32,6 +41,7 @@ export const taskService = {
     async toggleTask(id) {
         const response = await fetch(`${API_URL}/${id}/toggle`, {
             method: 'PATCH',
+            headers: getAuthHeaders(),
         });
         if (!response.ok) throw new Error('Error al actualizar la tarea');
         return mapTarea(await response.json());
@@ -40,6 +50,7 @@ export const taskService = {
     async deleteTask(id) {
         const response = await fetch(`${API_URL}/${id}`, {
             method: 'DELETE',
+            headers: getAuthHeaders(),
         });
         if (!response.ok) throw new Error('Error al eliminar la tarea');
         return await response.json();

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import './Login.css';
+import logoVPlan from './img/LogoVPlan.png';
 
 const API_URL = 'http://localhost:3000/api/auth/login';
 
 export default function Login({ onNavigate }) {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +16,6 @@ export default function Login({ onNavigate }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    // Limpiar error de API al escribir
     if (apiError) setApiError('');
   };
 
@@ -39,11 +36,8 @@ export default function Login({ onNavigate }) {
     }
 
     setErrors(newErrors);
-
-    // Si hay errores de validación local, no continuar
     if (Object.keys(newErrors).length > 0) return;
 
-    // ── Llamada a la API real ─────────────────────────────────────────────────
     try {
       setIsLoading(true);
       setApiError('');
@@ -58,15 +52,12 @@ export default function Login({ onNavigate }) {
       const data = await response.json();
 
       if (!response.ok) {
-        // El backend devolvió un error (401, 400, 500...)
         setApiError(data.error || 'Credenciales incorrectas. Verificá tus datos.');
-        return; // ← BLOQUEA la navegación al dashboard
+        return;
       }
 
-      // ── Éxito: guardar token y datos del usuario ──────────────────────────
       localStorage.setItem('vplan_token', data.token);
       localStorage.setItem('vplan_user', JSON.stringify(data.usuario));
-
       onNavigate('dashboard');
     } catch (err) {
       setApiError('No se pudo conectar al servidor. Verificá que el backend esté corriendo.');
@@ -76,24 +67,59 @@ export default function Login({ onNavigate }) {
   };
 
   return (
-    <main className="login-wrapper">
-      <section className="login-box">
-        {/* ── Panel Izquierdo ── */}
-        <div className="login-left">
-          <img src="img/LogoVPlan (1).png" alt="Logo VPlan" className="login-logo-panel" />
-          <h2 className="panel-title">Tu productividad,<br />simplificada.</h2>
-          <p className="panel-subtitle">Organiza, prioriza y alcanza tus metas diarias con VPlan.</p>
-          <div className="panel-metric">
-            <span className="metric-number">500+</span>
-            <span className="metric-label">tareas completadas por nuestra comunidad</span>
-          </div>
+    <div className="auth-page">
+
+      {/* ══ LEFT PANEL — Brand ══════════════════════════════════ */}
+      <div className="auth-panel-brand">
+        {/* Animated bubbles */}
+        <div className="auth-bubbles" aria-hidden="true">
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
+          <div className="auth-bubble" />
         </div>
 
-        {/* ── Panel Derecho: Formulario ── */}
-        <div className="login-right">
-          <div className="logo-area">
+        <div className="brand-content">
+          <img src={logoVPlan} alt="VPlan" className="brand-logo" />
+
+          <div>
+            <h2 className="brand-headline">
+              Tu productividad,<br />
+              <em>simplificada.</em>
+            </h2>
+            <p className="brand-sub" style={{ marginTop: '14px' }}>
+              Organiza, prioriza y alcanza tus metas diarias con una plataforma diseñada para el rendimiento real.
+            </p>
+          </div>
+
+          <div className="brand-divider" />
+
+          <div className="brand-metrics">
+            <div className="brand-metric">
+              <span className="metric-val">500+</span>
+              <span className="metric-lbl">Tareas completadas</span>
+            </div>
+            <div className="brand-metric">
+              <span className="metric-val">98%</span>
+              <span className="metric-lbl">Satisfacción</span>
+            </div>
+          </div>
+
+          <div className="brand-trust">
+            <span className="trust-badge">✓ Seguro y privado</span>
+            <span className="trust-badge">⚡ Siempre disponible</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ RIGHT PANEL — Form ══════════════════════════════════ */}
+      <div className="auth-panel-form">
+        <div className="form-inner">
+          <div className="form-header">
+            <span className="form-eyebrow">Acceso a VPlan</span>
             <h1>Bienvenido de nuevo 👋</h1>
-            <p>Inicia sesión para gestionar tus tareas</p>
+            <p>Iniciá sesión para gestionar tus tareas y métricas de productividad.</p>
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -127,7 +153,6 @@ export default function Login({ onNavigate }) {
               <span className="error-msg">{errors.password}</span>
             </div>
 
-            {/* ── Error de autenticación del servidor ── */}
             {apiError && (
               <div className="api-error-banner" role="alert">
                 <span>⚠️</span> {apiError}
@@ -135,40 +160,42 @@ export default function Login({ onNavigate }) {
             )}
 
             <button type="submit" className="btn-primary" disabled={isLoading}>
-              {isLoading ? 'Verificando...' : 'Acceder'}
+              {isLoading ? 'Verificando...' : 'Iniciar sesión'}
             </button>
           </form>
 
-          <footer className="login-footer">
+          <footer className="form-footer">
             <button
               type="button"
+              className="btn-link"
               onClick={() => setShowForgotModal(true)}
-              style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.83rem', padding: 0 }}
             >
               ¿Olvidaste tu contraseña?
             </button>
-            <p style={{ marginTop: '14px', fontSize: '0.83rem', color: '#64748b' }}>
+            <p>
               ¿No tenés cuenta?{' '}
               <button
                 type="button"
+                className="btn-link-green"
                 onClick={() => onNavigate('register')}
-                style={{ background: 'none', border: 'none', color: '#16a34a', fontWeight: 600, cursor: 'pointer', padding: 0 }}
               >
-                Registrate
+                Registrate gratis
               </button>
             </p>
           </footer>
         </div>
-      </section>
+      </div>
 
-      {/* ── Modal de contraseña olvidada ── */}
+      {/* ══ Modal contraseña olvidada ════════════════════════ */}
       <div className={`modal-overlay ${showForgotModal ? 'open' : ''}`}>
         <div className="modal-box">
           <h3>Correo Enviado</h3>
           <p>Hemos enviado las instrucciones para restablecer tu contraseña a tu correo electrónico.</p>
-          <button onClick={() => setShowForgotModal(false)} className="btn-primary">Aceptar</button>
+          <button onClick={() => setShowForgotModal(false)} className="btn-primary">
+            Aceptar
+          </button>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
