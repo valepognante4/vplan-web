@@ -124,6 +124,8 @@ button {
   padding: 9px 20px;
   font-size: 0.88rem;
   white-space: nowrap;
+  min-width: 130px;
+  text-align: center;
 }
 
 .btn-secondary:hover {
@@ -138,8 +140,10 @@ button {
   border: none;
   padding: 9px 20px;
   font-size: 0.88rem;
-  box-shadow: 0 4px 14px rgba(22,163,74,0.35);
   white-space: nowrap;
+  min-width: 130px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(22,163,74,0.35);
 }
 
 .btn-primary:hover {

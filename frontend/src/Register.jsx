@@ -120,7 +120,7 @@ export default function Register({ onNavigate }) {
         <div className="brand-content">
           <img
             src={logoVPlan}
-            alt="VPlan"
+            alt="VPlan — Ir al inicio"
             className="brand-logo"
             onClick={() => onNavigate('landing')}
             style={{ cursor: 'pointer' }}

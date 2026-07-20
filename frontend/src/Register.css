@@ -20,11 +20,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Full-viewport wrapper ──────────────────────────────── */
+/* ── Full-viewport wrapper ────────────────────────────────── */
 .auth-page {
     width: 100vw;
     height: 100vh;
-    min-height: 600px;
+    /* overflow: hidden reemplazado — el panel derecho hace scroll */
     overflow: hidden;
     display: flex;
     font-family: 'Inter', system-ui, sans-serif;
@@ -96,7 +96,7 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 26px;
+    gap: 20px;  /* reducido de 26px para que quepa mejor */
     width: 100%;
 }
 
@@ -109,8 +109,8 @@
 }
 
 .brand-logo:hover {
-    filter: brightness(1.2) drop-shadow(0 8px 24px rgba(0,0,0,0.5));
-    transform: scale(1.02);
+    filter: brightness(1.5) drop-shadow(0 6px 18px rgba(0,0,0,0.4));
+    transform: scale(1.04);
 }
 
 .brand-headline {
@@ -203,9 +203,9 @@
     background: #f8fafc;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: flex-start;   /* alineado al inicio para que el scroll funcione */
     align-items: center;
-    padding: 36px 56px;
+    padding: 32px 52px;            /* padding reducido para caber en pantallas estándar */
     overflow-y: auto;
     position: relative;
 }
@@ -224,7 +224,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    margin: auto 0;
+    padding: 16px 0;              /* padding vertical para que no se corte en el borde */
     animation: formSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -233,9 +233,9 @@
     to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ── Form header ───────────────────────────────────── */
+/* ── Form header ────────────────────────────────────────────── */
 .form-header {
-    margin-bottom: 20px;
+    margin-bottom: 20px;   /* reducido de 28px */
 }
 
 .form-eyebrow {
@@ -272,9 +272,9 @@
     line-height: 1.55;
 }
 
-/* ── Input groups ───────────────────────────────── */
+/* ── Input groups ─────────────────────────────────────────── */
 .input-group {
-    margin-bottom: 12px;
+    margin-bottom: 12px;   /* reducido de 16px para caber en pantallas estándar */
 }
 
 .input-group label {
@@ -287,12 +287,12 @@
 
 .input-group input {
     width: 100%;
-    padding: 13px 18px;
+    padding: 11px 16px;    /* reducido de 13px para compactar el form */
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
     border-radius: 12px;
     color: var(--text-dark);
-    font-size: 0.94rem;
+    font-size: 0.93rem;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -404,7 +404,7 @@
 
 /* ── Footer ───────────────────────────────────────────────── */
 .form-footer {
-    margin-top: 16px;
+    margin-top: 16px;   /* reducido de 22px */
     text-align: center;
 }
 
