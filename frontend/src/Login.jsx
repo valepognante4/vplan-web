@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
 import './Login.css';
 import logoVPlan from './img/LogoVPlan.png';
 
@@ -17,6 +18,36 @@ export default function Login({ onNavigate }) {
   const [showForgotModal, setShowForgotModal]     = useState(false);
   const [forgotStatus, setForgotStatus]           = useState('idle'); // idle | loading | success | error
   const [forgotError, setForgotError]             = useState('');
+
+  /* ── Handler de Google Sign-In ── */
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setIsLoading(true);
+      setApiError('');
+      
+      const response = await fetch('http://localhost:3000/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ credential: credentialResponse.credential }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setApiError(data.error || 'Error al autenticar con Google.');
+        return;
+      }
+
+      localStorage.setItem('vplan_token', data.token);
+      localStorage.setItem('vplan_user', JSON.stringify(data.usuario));
+      onNavigate('dashboard');
+    } catch (err) {
+      setApiError('No se pudo conectar al servidor para verificar Google Sign-In.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   /* ── Handlers del formulario de login ── */
   const handleChange = (e) => {
@@ -183,6 +214,24 @@ export default function Login({ onNavigate }) {
             <span className="form-eyebrow">Acceso a VPlan</span>
             <h1>Bienvenido de nuevo 👋</h1>
             <p>Iniciá sesión para gestionar tus tareas y métricas de productividad.</p>
+          </div>
+
+          <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setApiError('Google Sign-In falló o fue cancelado.')}
+              useOneTap
+              theme="outline"
+              text="signin_with"
+              shape="rectangular"
+              width="100%"
+            />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }}></div>
+            <span style={{ padding: '0 10px', color: '#64748b', fontSize: '14px' }}>o con correo</span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: '#e2e8f0' }}></div>
           </div>
 
           <form onSubmit={handleSubmit} noValidate>
