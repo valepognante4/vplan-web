@@ -20,10 +20,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── Full-viewport wrapper ────────────────────────────────── */
+/* ── Full-viewport wrapper ──────────────────────────────── */
 .auth-page {
     width: 100vw;
     height: 100vh;
+    min-height: 600px;
     overflow: hidden;
     display: flex;
     font-family: 'Inter', system-ui, sans-serif;
@@ -100,10 +101,16 @@
 }
 
 .brand-logo {
-    width: 140px;
+    width: 130px;
     height: auto;
     filter: brightness(1.3) drop-shadow(0 4px 12px rgba(0,0,0,0.3));
     margin-bottom: 4px;
+    transition: filter 0.22s, transform 0.22s;
+}
+
+.brand-logo:hover {
+    filter: brightness(1.2) drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+    transform: scale(1.02);
 }
 
 .brand-headline {
@@ -196,9 +203,9 @@
     background: #f8fafc;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 48px 60px;
+    padding: 36px 56px;
     overflow-y: auto;
     position: relative;
 }
@@ -217,6 +224,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    margin: auto 0;
     animation: formSlideIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -225,9 +233,9 @@
     to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ── Form header ────────────────────────────────────────────── */
+/* ── Form header ───────────────────────────────────── */
 .form-header {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
 }
 
 .form-eyebrow {
@@ -264,9 +272,9 @@
     line-height: 1.55;
 }
 
-/* ── Input groups ─────────────────────────────────────────── */
+/* ── Input groups ───────────────────────────────── */
 .input-group {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .input-group label {
@@ -371,7 +379,7 @@
 /* ── Submit button ────────────────────────────────────────── */
 .btn-primary {
     width: 100%;
-    padding: 15px;
+    padding: 13px;
     background: linear-gradient(135deg, #16a34a, #10b981);
     color: white;
     border: none;
@@ -382,7 +390,7 @@
     cursor: pointer;
     transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
     box-shadow: 0 4px 20px rgba(22,163,74,0.35);
-    margin-top: 6px;
+    margin-top: 4px;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -396,7 +404,7 @@
 
 /* ── Footer ───────────────────────────────────────────────── */
 .form-footer {
-    margin-top: 22px;
+    margin-top: 16px;
     text-align: center;
 }
 

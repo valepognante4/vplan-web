@@ -81,7 +81,17 @@ export default function Login({ onNavigate }) {
         </div>
 
         <div className="brand-content">
-          <img src={logoVPlan} alt="VPlan" className="brand-logo" />
+          <img
+            src={logoVPlan}
+            alt="VPlan"
+            className="brand-logo"
+            onClick={() => onNavigate('landing')}
+            style={{ cursor: 'pointer' }}
+            role="button"
+            tabIndex={0}
+            aria-label="Ir al inicio"
+            onKeyDown={(e) => e.key === 'Enter' && onNavigate('landing')}
+          />
 
           <div>
             <h2 className="brand-headline">

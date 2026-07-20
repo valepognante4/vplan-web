@@ -41,7 +41,7 @@ export default function App() {
             Iniciar sesión
           </button>
           <button className="btn-primary" onClick={() => setCurrentView('register')}>
-            Empezar gratis
+            Registrarse
           </button>
         </div>
       </nav>

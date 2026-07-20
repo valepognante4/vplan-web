@@ -260,6 +260,12 @@
     text-decoration: none;
     color: var(--text-sub);
     font-size: 0.88rem;
+    font-family: inherit;
+    font-weight: 500;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 100%;
     transition: background var(--transition), color var(--transition);
 }
 
@@ -281,7 +287,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 16px;
     animation: fadeSlideDown 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.vplan-dashboard .content-header > div {
+    min-width: 0;
+    flex: 1;
 }
 
 .vplan-dashboard .content-header h1 {
@@ -294,7 +306,10 @@
     letter-spacing: -0.04em;
     line-height: 1.08;
     position: relative;
-    display: inline-block;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .vplan-dashboard .content-header h1::after {
@@ -332,6 +347,9 @@
     transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
     box-shadow: 0 4px 18px var(--primary-glow);
     letter-spacing: 0.01em;
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: auto;
 }
 
 .vplan-dashboard .btn-primary:hover {
