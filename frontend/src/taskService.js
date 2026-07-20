@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/tareas';
+const API_URL = '/api/tareas';
 
 // Mapea una fila del DB (snake_case español) al shape que usa el Dashboard
 const mapTarea = (t) => ({
@@ -22,7 +22,10 @@ const getAuthHeaders = () => {
 
 export const taskService = {
     async getTasks() {
-        const response = await fetch(API_URL, { headers: getAuthHeaders() });
+        const response = await fetch(API_URL, { 
+            headers: getAuthHeaders(),
+            credentials: 'include' 
+        });
         if (!response.ok) throw new Error('Error al obtener las tareas');
         const data = await response.json();
         return data.map(mapTarea);
@@ -32,6 +35,7 @@ export const taskService = {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: getAuthHeaders(),
+            credentials: 'include',
             body: JSON.stringify(taskData),
         });
         if (!response.ok) throw new Error('Error al crear la tarea');
@@ -42,6 +46,7 @@ export const taskService = {
         const response = await fetch(`${API_URL}/${id}/toggle`, {
             method: 'PATCH',
             headers: getAuthHeaders(),
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Error al actualizar la tarea');
         return mapTarea(await response.json());
@@ -51,6 +56,7 @@ export const taskService = {
         const response = await fetch(`${API_URL}/${id}`, {
             method: 'DELETE',
             headers: getAuthHeaders(),
+            credentials: 'include',
         });
         if (!response.ok) throw new Error('Error al eliminar la tarea');
         return await response.json();

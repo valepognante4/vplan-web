@@ -3,7 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import './Register.css';
 import logoVPlan from './img/LogoVPlan.png';
 
-const API_URL = 'http://localhost:3000/api/auth/registro';
+const API_URL = '/api/auth/registro';
 
 export default function Register({ onNavigate }) {
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ export default function Register({ onNavigate }) {
       setIsLoading(true);
       setApiError('');
       
-      const response = await fetch('http://localhost:3000/api/auth/google', {
+      const response = await fetch('/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

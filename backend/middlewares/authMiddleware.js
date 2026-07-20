@@ -10,15 +10,22 @@ const jwt = require('jsonwebtoken');
  * Si no, responde con 401 Unauthorized.
  */
 const verificarToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
+    // 1. Intentar leer de las cookies (HttpOnly)
+    let token = req.cookies && req.cookies.vplan_token;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // 2. Fallback: intentar leer del header Authorization
+    if (!token) {
+        const authHeader = req.headers['authorization'];
+        if (authHeader && authHeader.startsWith('Bearer ')) {
+            token = authHeader.split(' ')[1];
+        }
+    }
+
+    if (!token) {
         return res.status(401).json({
             error: 'Acceso denegado. Se requiere un token de autenticación.',
         });
     }
-
-    const token = authHeader.split(' ')[1];
 
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
