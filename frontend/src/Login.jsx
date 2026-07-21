@@ -4,8 +4,8 @@ import { Shield, Zap, AlertCircle, Mail } from 'lucide-react';
 import './Login.css';
 import logoVPlan from './img/LogoVPlan.png';
 
-const API_URL        = '/api/auth/login';
-const FORGOT_API_URL = '/api/auth/forgot-password';
+const API_URL        = `${import.meta.env.VITE_API_URL}/api/auth/login`;
+const FORGOT_API_URL = `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -26,7 +26,7 @@ export default function Login({ onNavigate }) {
       setIsLoading(true);
       setApiError('');
       
-      const response = await fetch('/api/auth/google', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

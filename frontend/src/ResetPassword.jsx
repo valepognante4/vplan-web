@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ResetPassword.css';
 import logoVPlan from './img/LogoVPlan.png';
 
-const RESET_API_URL = '/api/auth/reset-password';
+const RESET_API_URL = `${import.meta.env.VITE_API_URL}/api/auth/reset-password`;
 
 const PASSWORD_RULES = [
   { test: (p) => p.length >= 8,       label: 'Mínimo 8 caracteres' },

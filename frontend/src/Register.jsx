@@ -13,7 +13,7 @@ import {
 import './Register.css';
 import logoVPlan from './img/LogoVPlan.png';
 
-const API_URL = '/api/auth/registro';
+const API_URL = `${import.meta.env.VITE_API_URL}/api/auth/registro`;
 
 export default function Register({ onNavigate }) {
   const [formData, setFormData] = useState({
@@ -36,7 +36,7 @@ export default function Register({ onNavigate }) {
       setIsLoading(true);
       setApiError('');
       
-      const response = await fetch('/api/auth/google', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
