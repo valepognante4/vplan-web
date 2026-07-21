@@ -1,15 +1,8 @@
 const { Pool } = require('pg');
 
-// Forzamos la lectura estricta de la URL de producción o de tu .env local
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  console.error("¡ERROR CRÍTICO! Falta la variable DATABASE_URL.");
-}
-
 const pool = new Pool({
-  connectionString: connectionString,
-  family: 4, // Fuerza IPv4 para evitar bloqueos en la nube
+  connectionString: 'postgresql://postgres:1rcmprjavt0iuYeM@db.rxrrojbnggynffouphdq.supabase.co:5432/postgres',
+  family: 4,
   ssl: {
     rejectUnauthorized: false
   }
