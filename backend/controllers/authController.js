@@ -140,7 +140,7 @@ exports.googleLogin = async (req, res) => {
         });
     } catch (error) {
         const statusCode = error.statusCode || 500;
-        console.error('[googleLogin] Error:', error.message);
-        return res.status(statusCode).json({ error: error.message });
+        console.error('[googleLogin] Error completo:', error);
+        return res.status(statusCode).json({ error: error.message || 'Error interno al autenticar con Google' });
     }
 };

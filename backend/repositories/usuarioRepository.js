@@ -77,8 +77,13 @@ const usuarioRepository = {
                     nombre    = EXCLUDED.nombre
             RETURNING id, nombre, email, avatar, created_at
         `;
-        const result = await pool.query(query, [nombre, email, googleId, avatar]);
-        return result.rows[0];
+        try {
+            const result = await pool.query(query, [nombre, email, googleId, avatar]);
+            return result.rows[0];
+        } catch (err) {
+            console.error('[usuarioRepository.findOrCreateByGoogle] Error en BD:', err);
+            throw err;
+        }
     },
 };
 

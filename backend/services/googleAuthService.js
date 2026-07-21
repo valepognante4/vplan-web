@@ -11,10 +11,18 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
  * @returns {Promise<{ email: string, nombre: string, googleId: string, avatar: string }>}
  */
 const verificarGoogleToken = async (idToken) => {
-    const ticket = await client.verifyIdToken({
-        idToken,
-        audience: process.env.GOOGLE_CLIENT_ID,
-    });
+    let ticket;
+    try {
+        ticket = await client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+    } catch (err) {
+        console.error('[googleAuthService] Error al verificar token con Google:', err);
+        const error = new Error('El token de Google es inválido o hubo un problema con el GOOGLE_CLIENT_ID.');
+        error.statusCode = 401;
+        throw error;
+    }
 
     const payload = ticket.getPayload();
 
