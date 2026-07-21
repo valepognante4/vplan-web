@@ -4,8 +4,7 @@ services:
     env: docker
     region: ohio
     plan: free
-    # Cambiamos esto:
-    dockerfilePath: ./Dockerfile.backend 
+    dockerfilePath: ./Dockerfile.backend  # <--- Sin el # adelante
     envVars:
       - key: PORT
         value: 3001
@@ -15,5 +14,4 @@ services:
     env: docker
     region: ohio
     plan: free
-    # Y esto:
-    dockerfilePath: ./Dockerfile.frontend
+    dockerfilePath: ./Dockerfile.frontend # <--- Sin el # adelante
