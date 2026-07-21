@@ -6,11 +6,11 @@ const app          = express();
 
 // ── CORS: permite peticiones desde cualquier puerto de localhost ──────────────
 const LOCALHOST_REGEX = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+const FRONTEND_URL = process.env.FRONTEND_URL;
 
 const corsOptions = {
     origin: (origin, callback) => {
-        // Sin origen → Postman, curl, herramientas internas → permitir
-        if (!origin || LOCALHOST_REGEX.test(origin)) {
+        if (!origin || LOCALHOST_REGEX.test(origin) || origin === FRONTEND_URL) {
             return callback(null, true);
         }
         callback(new Error(`Origen no permitido por CORS: ${origin}`));
@@ -45,6 +45,6 @@ app.get('/api/health', (req, res) => {
 
 // ── Arrancar servidor ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
