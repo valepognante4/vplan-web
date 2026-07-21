@@ -1,8 +1,15 @@
 const { Pool } = require('pg');
 
+// Forzamos la lectura estricta de la URL de producción o de tu .env local
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error("¡ERROR CRÍTICO! Falta la variable DATABASE_URL.");
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  family: 4, // Fuerza el uso de IPv4 para evitar errores de red ENETUNREACH en la nube
+  connectionString: connectionString,
+  family: 4, // Fuerza IPv4 para evitar bloqueos en la nube
   ssl: {
     rejectUnauthorized: false
   }
