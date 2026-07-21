@@ -1,7 +1,7 @@
 services:
   - type: web
     name: vplan-backend
-    env: docker
+    runtime: docker
     region: ohio
     plan: free
     dockerfilePath: ./Dockerfile.backend  # <--- Sin el # adelante
@@ -11,7 +11,7 @@ services:
 
   - type: web
     name: vplan-frontend
-    env: docker
+    runtime: docker
     region: ohio
     plan: free
     dockerfilePath: ./Dockerfile.frontend # <--- Sin el # adelante
