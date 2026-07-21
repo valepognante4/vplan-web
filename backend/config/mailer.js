@@ -1,21 +1,17 @@
 'use strict';
 const nodemailer = require('nodemailer');
 
-/**
- * Transporter de Nodemailer configurado a partir de las variables de entorno SMTP.
- * Se crea una única instancia (singleton) para toda la app.
- *
- * Variables de entorno requeridas:
- *   SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS
- */
 const transporter = nodemailer.createTransport({
-    host:   process.env.SMTP_HOST,
-    port:   Number(process.env.SMTP_PORT) || 465,
-    secure: process.env.SMTP_SECURE === 'true', // true → SSL/TLS (port 465)
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: process.env.SMTP_SECURE === 'true', // false para el puerto 587
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
+    tls: {
+        rejectUnauthorized: false // Evita bloqueos por certificados auto-firmados o restricciones de red en la nube
+    }
 });
 
 module.exports = transporter;
