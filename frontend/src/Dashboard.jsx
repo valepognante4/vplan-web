@@ -85,10 +85,11 @@ export default function PanelPrincipal({ onNavigate }) {
 
   const handleToggleTask = async (id) => {
     try {
+      console.log(`[Dashboard] Clic en completar tarea con ID: ${id}`);
       const updatedTask = await taskService.toggleTask(id);
       setTasks(tasks.map(t => t.id === id ? updatedTask : t));
     } catch (error) {
-      console.error("Error al cambiar estado:", error);
+      console.error("[Dashboard] Error al cambiar estado:", error);
     }
   };
 

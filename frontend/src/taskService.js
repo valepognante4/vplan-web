@@ -44,13 +44,20 @@ export const taskService = {
     },
 
     async toggleTask(id) {
-        const response = await fetch(`${API_URL}/${id}/toggle`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            credentials: 'include',
-        });
-        if (!response.ok) throw new Error('Error al actualizar la tarea');
-        return mapTarea(await response.json());
+        const url = `${API_URL}/${id}/toggle`;
+        console.log(`[taskService] Iniciando fetch para completar tarea. URL: ${url}`);
+        try {
+            const response = await fetch(url, {
+                method: 'PATCH',
+                headers: getAuthHeaders(),
+                credentials: 'include',
+            });
+            if (!response.ok) throw new Error('Error al actualizar la tarea');
+            return mapTarea(await response.json());
+        } catch (error) {
+            console.error(`[taskService] Error en el fetch de toggleTask para ID ${id}:`, error);
+            throw error;
+        }
     },
 
     async deleteTask(id) {
