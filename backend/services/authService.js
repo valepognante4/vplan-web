@@ -161,32 +161,39 @@ const authService = {
         const resetUrl    = `${frontendUrl}/reset-password?token=${resetToken}`;
 
         // 4. Enviar correo con Nodemailer
-        await transporter.sendMail({
-            from:    `"VPlan" <${process.env.SMTP_USER}>`,
-            to:      usuario.email,
-            subject: 'Restablecer tu contraseña — VPlan',
-            text: `Hola ${usuario.nombre},\n\nRecibimos una solicitud para restablecer tu contraseña.\nUsa el siguiente enlace (válido por 1 hora):\n\n${resetUrl}\n\nSi no solicitaste este cambio, ignora este mensaje.\n\n— El equipo de VPlan`,
-            html: `
-                <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; color: #1a1a2e;">
-                    <h2 style="color: #6c63ff;">Restablecer contraseña</h2>
-                    <p>Hola <strong>${usuario.nombre}</strong>,</p>
-                    <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>VPlan</strong>.</p>
-                    <p>Este enlace es válido durante <strong>1 hora</strong>:</p>
-                    <p style="text-align: center; margin: 28px 0;">
-                        <a href="${resetUrl}"
-                           style="background: #6c63ff; color: #fff; text-decoration: none;
-                                  padding: 12px 28px; border-radius: 8px; font-size: 16px;">
-                            Restablecer contraseña
-                        </a>
-                    </p>
-                    <p style="font-size: 13px; color: #666;">
-                        Si no solicitaste este cambio, puedes ignorar este correo con total seguridad.
-                    </p>
-                    <hr style="border: none; border-top: 1px solid #eee; margin-top: 32px;">
-                    <p style="font-size: 12px; color: #aaa; text-align: center;">© ${new Date().getFullYear()} VPlan</p>
-                </div>
-            `,
-        });
+        try {
+            await transporter.sendMail({
+                from:    `"VPlan" <${process.env.SMTP_USER || 'no-reply@vplan.com'}>`,
+                to:      usuario.email,
+                subject: 'Restablecer tu contraseña — VPlan',
+                text: `Hola ${usuario.nombre},\n\nRecibimos una solicitud para restablecer tu contraseña.\nUsa el siguiente enlace (válido por 1 hora):\n\n${resetUrl}\n\nSi no solicitaste este cambio, ignora este mensaje.\n\n— El equipo de VPlan`,
+                html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; color: #1a1a2e;">
+                        <h2 style="color: #6c63ff;">Restablecer contraseña</h2>
+                        <p>Hola <strong>${usuario.nombre}</strong>,</p>
+                        <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta en <strong>VPlan</strong>.</p>
+                        <p>Este enlace es válido durante <strong>1 hora</strong>:</p>
+                        <p style="text-align: center; margin: 28px 0;">
+                            <a href="${resetUrl}"
+                               style="background: #6c63ff; color: #fff; text-decoration: none;
+                                      padding: 12px 28px; border-radius: 8px; font-size: 16px;">
+                                Restablecer contraseña
+                            </a>
+                        </p>
+                        <p style="font-size: 13px; color: #666;">
+                            Si no solicitaste este cambio, puedes ignorar este correo con total seguridad.
+                        </p>
+                        <hr style="border: none; border-top: 1px solid #eee; margin-top: 32px;">
+                        <p style="font-size: 12px; color: #aaa; text-align: center;">© ${new Date().getFullYear()} VPlan</p>
+                    </div>
+                `,
+            });
+        } catch (error) {
+            console.error('Error enviando correo de reseteo con Nodemailer:', error);
+            const err = new Error('Error interno del servidor al enviar el correo. Por favor, intenta de nuevo más tarde.');
+            err.statusCode = 502; // Bad Gateway
+            throw err;
+        }
     },
 
     /**
