@@ -4,8 +4,9 @@ import { Shield, Zap, AlertCircle, Mail } from 'lucide-react';
 import './Login.css';
 import logoVPlan from './img/LogoVPlan.png';
 
-const API_URL        = `${import.meta.env.VITE_API_URL}/api/auth/login`;
-const FORGOT_API_URL = `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`;
+const API_BASE = import.meta.env.VITE_API_URL || 'https://vplan-backend.onrender.com';
+const API_URL        = `${API_BASE}/api/auth/login`;
+const FORGOT_API_URL = `${API_BASE}/api/auth/forgot-password`;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -26,7 +27,7 @@ export default function Login({ onNavigate }) {
       setIsLoading(true);
       setApiError('');
       
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/google`, {
+      const response = await fetch(`${API_BASE}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

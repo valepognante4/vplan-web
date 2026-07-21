@@ -1,4 +1,5 @@
-const API_URL = `${import.meta.env.VITE_API_URL}/api/tareas`;
+const API_BASE = import.meta.env.VITE_API_URL || 'https://vplan-backend.onrender.com';
+const API_URL = `${API_BASE}/api/tareas`;
 
 // Mapea una fila del DB (snake_case español) al shape que usa el Dashboard
 const mapTarea = (t) => ({
