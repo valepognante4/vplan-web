@@ -1,8 +1,12 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // O tu cadena de conexión directa a Supabase
-  family: 4, // <-- Esto fuerza el uso de IPv4 y evita el error ENETUNREACH
+  host: 'db.rxrrojbnggynffouphdq.supabase.co',
+  port: 5432,
+  user: 'postgres',
+  password: '1rcmprjavt0iuYeM',
+  database: 'postgres',
+  family: 4, // Obliga al socket de red a usar IPv4 de forma nativa
   ssl: {
     rejectUnauthorized: false
   }
