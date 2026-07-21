@@ -8,7 +8,7 @@ const mapTarea = (t) => ({
     description: t.descripcion,
     priority:    t.prioridad,
     dueDate:     t.fecha_vencimiento,
-    completed:   t.completada,
+    completed:   t.estado === 'COMPLETADA',
     createdAt:   t.created_at,
 });
 
